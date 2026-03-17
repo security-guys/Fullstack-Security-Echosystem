@@ -1,0 +1,242 @@
+name: CI/CD Pipeline — Build, Scan & Deploy to EKS
+
+# Triggers
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  AWS_REGION: us-east-1
+  ECR_REGISTRY: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com
+  BACKEND_IMAGE: board-backend
+  FRONTEND_IMAGE: board-frontend
+  EKS_CLUSTER: board-service-cluster
+  K8S_NAMESPACE: board-service
+
+jobs:
+  # ─────────────────────────────────────────────────────
+  # JOB 1: Lint & Test
+  # ─────────────────────────────────────────────────────
+  lint-and-test:
+    name: Lint & Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install backend dependencies
+        run: npm ci
+        working-directory: backend
+
+      - name: Run backend lint
+        run: npm run lint --if-present
+        working-directory: backend
+
+      - name: Run backend tests
+        run: npm test --if-present
+        working-directory: backend
+
+  # ─────────────────────────────────────────────────────
+  # JOB 2: Security Scanning (DevSecOps — Phase 7 preview)
+  # ─────────────────────────────────────────────────────
+  security-scan:
+    name: Security Scan (Trivy + CodeQL)
+    runs-on: ubuntu-latest
+    needs: lint-and-test
+    permissions:
+      security-events: write
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # SAST: CodeQL static analysis
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+
+      # SCA: Dependency vulnerability scan
+      - name: Run Trivy filesystem scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: "fs"
+          scan-ref: "."
+          format: "sarif"
+          output: "trivy-results.sarif"
+          severity: "CRITICAL,HIGH"
+          exit-code: "0" # Don't fail yet — report only
+          ignore-unfixed: true
+
+      - name: Upload Trivy scan results to GitHub Security
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: "trivy-results.sarif"
+
+  # ─────────────────────────────────────────────────────
+  # JOB 3: Build & Push to ECR
+  # Runs only on push to main (not on PRs)
+  # ─────────────────────────────────────────────────────
+  build-and-push:
+    name: Build & Push to ECR
+    runs-on: ubuntu-latest
+    needs: [lint-and-test, security-scan]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    outputs:
+      backend_image_tag: ${{ steps.meta.outputs.backend_tag }}
+      frontend_image_tag: ${{ steps.meta.outputs.frontend_tag }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Generate image tag from git SHA for traceability
+      - name: Generate image tags
+        id: meta
+        run: |
+          SHA_SHORT="${GITHUB_SHA::7}"
+          echo "backend_tag=${ECR_REGISTRY}/${BACKEND_IMAGE}:${SHA_SHORT}" >> $GITHUB_OUTPUT
+          echo "frontend_tag=${ECR_REGISTRY}/${FRONTEND_IMAGE}:${SHA_SHORT}" >> $GITHUB_OUTPUT
+          echo "sha_short=${SHA_SHORT}" >> $GITHUB_OUTPUT
+
+      # Configure AWS credentials via OIDC (no static keys!)
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      # Build & push backend
+      - name: Build & push backend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          push: true
+          tags: |
+            ${{ steps.meta.outputs.backend_tag }}
+            ${{ env.ECR_REGISTRY }}/${{ env.BACKEND_IMAGE }}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      # Scan the built image before deploying
+      - name: Scan backend image for vulnerabilities
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ steps.meta.outputs.backend_tag }}
+          format: "table"
+          severity: "CRITICAL"
+          exit-code: "1" # Block deployment if CRITICAL CVE found
+
+      # Build & push frontend
+      - name: Build & push frontend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          push: true
+          tags: |
+            ${{ steps.meta.outputs.frontend_tag }}
+            ${{ env.ECR_REGISTRY }}/${{ env.FRONTEND_IMAGE }}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      # Scan frontend image
+      - name: Scan frontend image for vulnerabilities
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ steps.meta.outputs.frontend_tag }}
+          format: "table"
+          severity: "CRITICAL"
+          exit-code: "1"
+
+  # ─────────────────────────────────────────────────────
+  # JOB 4: Deploy to EKS
+  # ─────────────────────────────────────────────────────
+  deploy:
+    name: Deploy to EKS
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    environment: production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Update kubeconfig for EKS
+        run: |
+          aws eks update-kubeconfig \
+            --name ${{ env.EKS_CLUSTER }} \
+            --region ${{ env.AWS_REGION }}
+
+      # Update image tags in deployment manifests (kustomize approach)
+      - name: Update image tags
+        env:
+          BACKEND_TAG: ${{ needs.build-and-push.outputs.backend_image_tag }}
+          FRONTEND_TAG: ${{ needs.build-and-push.outputs.frontend_image_tag }}
+        run: |
+          # Replace image references in deployment files
+          sed -i "s|image: .*board-backend.*|image: ${BACKEND_TAG}|g" k8s/backend-deployment.yaml
+          sed -i "s|image: .*board-frontend.*|image: ${FRONTEND_TAG}|g" k8s/frontend-deployment.yaml
+
+      - name: Apply Kubernetes manifests
+        run: |
+          # Apply in dependency order
+          kubectl apply -f k8s/namespace.yaml
+          kubectl apply -f k8s/configmap.yaml
+          # Note: secret.yaml should not be committed; use External Secrets or AWS SSM
+          kubectl apply -f k8s/backend-deployment.yaml
+          kubectl apply -f k8s/backend-service.yaml
+          kubectl apply -f k8s/frontend-deployment.yaml
+          kubectl apply -f k8s/frontend-service.yaml
+          kubectl apply -f k8s/ingress-eks.yaml
+
+      - name: Wait for rollout to complete
+        run: |
+          kubectl rollout status deployment/board-backend \
+            -n ${{ env.K8S_NAMESPACE }} --timeout=300s
+          kubectl rollout status deployment/board-frontend \
+            -n ${{ env.K8S_NAMESPACE }} --timeout=300s
+
+      - name: Verify deployment health
+        run: |
+          echo "=== Pod Status ==="
+          kubectl get pods -n ${{ env.K8S_NAMESPACE }}
+          echo ""
+          echo "=== Service Status ==="
+          kubectl get services -n ${{ env.K8S_NAMESPACE }}
+          echo ""
+          echo "=== Ingress / ALB Status ==="
+          kubectl get ingress -n ${{ env.K8S_NAMESPACE }}
+          echo ""
+          # Get ALB DNS to print in the summary
+          ALB_DNS=$(kubectl get ingress board-service-ingress \
+            -n ${{ env.K8S_NAMESPACE }} \
+            -o jsonpath='{.status.loadBalancer.ingress[0].hostname}' 2>/dev/null || echo "pending")
+          echo "🌐 Application URL: http://${ALB_DNS}"
+          echo "alb_dns=${ALB_DNS}" >> $GITHUB_STEP_SUMMARY
+
+      - name: Notify deployment success
+        if: success()
+        run: |
+          echo "✅ Deployment to EKS succeeded!" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Images**: ${{ needs.build-and-push.outputs.backend_image_tag }}" >> $GITHUB_STEP_SUMMARY

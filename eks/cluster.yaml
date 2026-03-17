@@ -1,0 +1,78 @@
+---
+# eksctl cluster configuration for board-service portfolio
+# Usage: eksctl create cluster -f eks/cluster.yaml
+#
+# Cost note: 1 node group with min=0, max=2
+#   - EKS control plane: ~$0.10/hr ($2.40/day)
+#   - t3.medium nodes: ~$0.0416/hr per node
+#   - SHUT DOWN when not demoing: eksctl delete cluster -f eks/cluster.yaml
+#
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: board-service-cluster
+  region: us-east-1
+  version: "1.29"
+  tags:
+    Project: board-service-portfolio
+    Environment: production
+    Owner: portfolio
+
+iam:
+  withOIDC: true # Required for IRSA (IAM Roles for Service Accounts)
+
+# VPC configuration - eksctl creates one automatically
+vpc:
+  cidr: 10.0.0.0/16
+  clusterEndpoints:
+    publicAccess: true
+    privateAccess: true
+
+managedNodeGroups:
+  - name: board-service-nodes
+    instanceType: t3.medium
+    minSize: 0 # Scale to 0 when not in use to save cost
+    maxSize: 2
+    desiredCapacity: 2
+    volumeSize: 20
+    volumeType: gp3
+    amiFamily: AmazonLinux2
+    labels:
+      role: worker
+      project: board-service
+    tags:
+      nodegroup-role: worker
+    iam:
+      withAddonPolicies:
+        imageBuilder: true # ECR pull permissions
+        albIngress: true # ALB Ingress Controller
+        cloudWatch: true # CloudWatch logging
+        autoScaler: true # Cluster Autoscaler
+    # SSH access (optional, use your key pair name)
+    # ssh:
+    #   allow: true
+    #   publicKeyName: your-key-pair-name
+
+# Enable CloudWatch logging for the control plane
+cloudWatch:
+  clusterLogging:
+    enableTypes:
+      - api
+      - audit
+      - authenticator
+      - controllerManager
+      - scheduler
+
+# Add-ons
+addons:
+  - name: vpc-cni
+    version: latest
+  - name: coredns
+    version: latest
+  - name: kube-proxy
+    version: latest
+  - name: aws-ebs-csi-driver
+    version: latest
+    wellKnownPolicies:
+      ebsCSIController: true
