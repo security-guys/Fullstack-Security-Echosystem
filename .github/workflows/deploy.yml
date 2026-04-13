@@ -1,4 +1,4 @@
-name: CI/CD Pipeline — Build, Scan & Deploy to EKS
+name: CI/CD Pipeline - Build, Scan & Deploy to EKS
 
 # Triggers
 on:
@@ -231,12 +231,12 @@ jobs:
           ALB_DNS=$(kubectl get ingress board-service-ingress \
             -n ${{ env.K8S_NAMESPACE }} \
             -o jsonpath='{.status.loadBalancer.ingress[0].hostname}' 2>/dev/null || echo "pending")
-          echo "🌐 Application URL: http://${ALB_DNS}"
+          echo "App URL: http://${ALB_DNS}"
           echo "alb_dns=${ALB_DNS}" >> $GITHUB_STEP_SUMMARY
 
       - name: Notify deployment success
         if: success()
         run: |
-          echo "✅ Deployment to EKS succeeded!" >> $GITHUB_STEP_SUMMARY
+          echo "Deployment to EKS succeeded!" >> $GITHUB_STEP_SUMMARY
           echo "**Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
           echo "**Images**: ${{ needs.build-and-push.outputs.backend_image_tag }}" >> $GITHUB_STEP_SUMMARY
