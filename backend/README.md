@@ -1,7 +1,3 @@
-This translation covers the entire content of your `README.md` for the **Node.js Express Learning Process**, maintaining the exact structure, code blocks, and formatting as requested.
-
----
-
 # Node Express Learning Process
 
 ## Step 1: Understanding Basic Structure
