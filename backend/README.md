@@ -1,85 +1,101 @@
-# 노드 익스프레스 학습 과정
+This translation covers the entire content of your `README.md` for the **Node.js Express Learning Process**, maintaining the exact structure, code blocks, and formatting as requested.
 
-## 1단계: 기본 구조 이해
-- Express.js 애플리케이션 설정
-  - 미들웨어 설정 (cors, express.json)
-  - 라우트 설정
-  - 에러 핸들링
-- 환경 변수 설정 (.env)
-- 서버 실행 설정
+---
 
-## 2단계: 데이터베이스
-- MongoDB 연결 설정
-  - Mongoose를 사용한 연결
-  - 환경 변수를 통한 연결 문자열 관리
-- 모델 정의
-  - User 모델
-  - Post 모델
+# Node Express Learning Process
 
-## 3단계: 인증 시스템
-- JWT 기반 인증
-- 사용자 관리 API
-  - 회원가입
-  - 로그인
-  - 사용자 정보 조회/수정
+## Step 1: Understanding Basic Structure
 
-## 4단계: API 엔드포인트
-- RESTful API 설계
-  - /api/users 엔드포인트
-  - /api/posts 엔드포인트
-- 요청/응답 처리
-  - JSON 형식 데이터 처리
-  - 에러 응답 처리
+- Express.js Application Setup
+  - Middleware configuration (cors, express.json)
+  - Route configuration
+  - Error handling
+- Environment Variable Setup (.env)
+- Server Execution Setup
 
-## 5단계: 미들웨어
-- CORS 설정
-  - 허용된 오리진 관리
-  - HTTP 메서드 제한
-- 로깅 미들웨어
-- 에러 처리 미들웨어
+## Step 2: Database
 
-## 6단계: 보안
-- CORS 보안 설정
-- 입력 데이터 검증
-- 에러 처리 및 로깅
+- MongoDB Connection Setup
+  - Connection using Mongoose
+  - Connection string management via environment variables
+- Model Definition
+  - User Model
+  - Post Model
 
-## 7단계: 테스트 및 배포
-- API 테스트
-- 서버 상태 모니터링
-- 배포 설정
+## Step 3: Authentication System
 
+- JWT-based Authentication
+- User Management API
+  - Registration
+  - Login
+  - User Info Lookup/Modification
 
+## Step 4: API Endpoints
 
-## 1단계: 기본 구조 이해
+- RESTful API Design
+  - /api/users endpoints
+  - /api/posts endpoints
+- Request/Response Processing
+  - JSON data processing
+  - Error response processing
 
-### 1. Express.js 애플리케이션 설정
+## Step 5: Middleware
 
-#### A. 미들웨어 설정
-1. **CORS 설정**
+- CORS Configuration
+  - Allowed origin management
+  - HTTP method restrictions
+- Logging Middleware
+- Error Handling Middleware
+
+## Step 6: Security
+
+- CORS Security Settings
+- Input Data Validation
+- Error Handling and Logging
+
+## Step 7: Testing and Deployment
+
+- API Testing
+- Server Status Monitoring
+- Deployment Configuration
+
+---
+
+## Step 1: Understanding Basic Structure
+
+### 1. Express.js Application Setup
+
+#### A. Middleware Configuration
+
+1. **CORS Configuration**
+
 ```javascript
 const corsOptions = {
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));
+      callback(new Error("Not allowed by CORS"));
     }
   },
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
 };
 ```
-- 특정 도메인에서의 요청만 허용
-- 허용된 HTTP 메서드 설정
-- 인증 헤더 허용
 
-2. **기본 미들웨어**
+- Allow requests only from specific domains
+- Configure allowed HTTP methods
+- Allow authentication headers
+
+2. **Basic Middleware**
+
 ```javascript
-app.use(express.json());  // JSON 요청 본문 파싱
+app.use(express.json()); // Parse JSON request bodies
 ```
 
-3. **로깅 미들웨어**
+3. **Logging Middleware**
+
 ```javascript
 app.use((req, res, next) => {
   console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
@@ -87,205 +103,218 @@ app.use((req, res, next) => {
 });
 ```
 
-#### B. 라우트 설정
-```javascript
-app.use('/api/users', userRoutes);
-app.use('/api/posts', postRoutes);
-```
-- 모듈화된 라우트 사용
-- API 버전 관리 (/api 접두사)
+#### B. Route Configuration
 
-#### C. 에러 핸들링
+```javascript
+app.use("/api/users", userRoutes);
+app.use("/api/posts", postRoutes);
+```
+
+- Use modularized routes
+- API versioning (/api prefix)
+
+#### C. Error Handling
+
 ```javascript
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({ message: 'Something went wrong!' });
+  res.status(500).json({ message: "Something went wrong!" });
 });
 ```
 
-### 2. 환경 변수 설정
-`.env` 파일을 사용하여 환경 변수 관리:
-- `MONGODB_URI`: MongoDB 연결 문자열
-- `PORT`: 서버 포트
-- `FRONTEND_URL`: 프론트엔드 URL
+### 2. Environment Variable Setup
 
-### 3. 서버 실행 설정
+Manage environment variables using a `.env` file:
+
+- `MONGODB_URI`: MongoDB connection string
+- `PORT`: Server port
+- `FRONTEND_URL`: Frontend URL
+
+### 3. Server Execution Setup
+
 ```javascript
 const PORT = process.env.PORT || 8080;
-const HOST = '0.0.0.0';
+const HOST = "0.0.0.0";
 
 app.listen(PORT, HOST, () => {
   console.log(`Server is running on http://${HOST}:${PORT}`);
 });
 ```
 
-이제 각 부분에 대해 더 자세히 살펴보고 싶으신 부분이 있으신가요? 예를 들어:
-1. 라우트 구조와 API 엔드포인트
-2. 미들웨어의 동작 방식
-3. 에러 처리 방법
-4. 환경 변수 설정 방법
+Are there any parts you would like to look into more deeply? For example:
 
-### Cors IP 추가
+1. Route structure and API endpoints
+2. How middleware operates
+3. Error handling methods
+4. How to set up environment variables
 
-현재 `allowedOrigins` 배열에는 다음 두 주소만 허용되어 있습니다:
+### Adding CORS IPs
+
+Currently, the `allowedOrigins` array permits only the following two addresses:
+
+```javascript
+const allowedOrigins = ["http://localhost:3000", "http://192.168.219.120:3000"];
+```
+
+If the frontend IP changes, you must add the new address to this array. For example, if the frontend runs on `192.168.1.100:3000`:
+
 ```javascript
 const allowedOrigins = [
-  'http://localhost:3000',
-  'http://192.168.219.120:3000'
+  "http://localhost:3000",
+  "http://192.168.219.120:3000",
+  "http://192.168.1.100:3000", // Add new IP
 ];
 ```
 
-프론트엔드의 IP가 변경되면, 이 배열에 새로운 주소를 추가해야 합니다. 예를 들어, 프론트엔드가 `192.168.1.100:3000`에서 실행된다면:
+Failing to do this may cause CORS errors. You will see errors like this in the browser developer tools console:
 
-```javascript
-const allowedOrigins = [
-  'http://localhost:3000',
-  'http://192.168.219.120:3000',
-  'http://192.168.1.100:3000'  // 새로운 IP 추가
-];
-```
-
-이렇게 하지 않으면 CORS 에러가 발생할 수 있습니다. 브라우저의 개발자 도구 콘솔에서 다음과 같은 에러를 볼 수 있습니다:
 ```
 Access to fetch at 'http://your-backend-url' from origin 'http://new-frontend-ip:3000' has been blocked by CORS policy
 ```
 
-## JWT 토큰 동작 방식
+## How JWT Tokens Work
 
-네, JWT의 전체 프로세스를 아주 상세하게 예시와 함께 설명해드리겠습니다.
+Yes, I will explain the entire JWT process in great detail with examples.
 
-### 1. 토큰 생성 과정
+### 1. Token Creation Process
 
 ```javascript
-// 1. 사용자 정보
+// 1. User Info
 const user = {
   _id: "123456",
-  username: "john_doe"
+  username: "john_doe",
 };
 
-// 2. JWT 토큰 생성
+// 2. Generate JWT Token
 const token = jwt.sign(
-  { userId: user._id },  // 페이로드
-  "mysecret123",         // JWT_SECRET
-  { expiresIn: '7d' }    // 옵션
+  { userId: user._id }, // Payload
+  "mysecret123", // JWT_SECRET
+  { expiresIn: "7d" }, // Options
 );
 ```
 
-이 과정에서 실제로 일어나는 일:
+What actually happens during this process:
 
-1. **헤더 생성**:
+1. **Header Creation**:
+
 ```javascript
 const header = {
-  "alg": "HS256",  // 해시 알고리즘
-  "typ": "JWT"     // 토큰 타입
+  alg: "HS256", // Hash algorithm
+  typ: "JWT", // Token type
 };
-// Base64로 인코딩
+// Base64 encoded
 // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
 ```
 
-2. **페이로드 생성**:
+2. **Payload Creation**:
+
 ```javascript
 const payload = {
-  "userId": "123456",
-  "iat": 1516239022,  // 발급 시간
-  "exp": 1516843822   // 만료 시간 (7일 후)
+  userId: "123456",
+  iat: 1516239022, // Issued at
+  exp: 1516843822, // Expiration (7 days later)
 };
-// Base64로 인코딩
+// Base64 encoded
 // eyJ1c2VySWQiOiIxMjM0NTYiLCJpYXQiOjE1MTYyMzkwMjJ9
 ```
 
-3. **서명 생성**:
-```javascript
-// 헤더와 페이로드를 점(.)으로 연결
-const data = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjM0NTYiLCJpYXQiOjE1MTYyMzkwMjJ9";
+3. **Signature Creation**:
 
-// JWT_SECRET으로 HMAC SHA-256 해시 생성
+```javascript
+// Join header and payload with a dot (.)
+const data =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjM0NTYiLCJpYXQiOjE1MTYyMzkwMjJ9";
+
+// Create HMAC SHA-256 hash using JWT_SECRET
 const signature = HMACSHA256(data, "mysecret123");
-// 결과: "SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+// Result: "SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
 ```
 
-4. **최종 토큰**:
+4. **Final Token**:
+
 ```
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjM0NTYiLCJpYXQiOjE1MTYyMzkwMjJ9.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
 ```
 
-### 2. 토큰 검증 과정
+### 2. Token Verification Process
 
 ```javascript
-// 1. 클라이언트가 토큰을 보냄
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjM0NTYiLCJpYXQiOjE1MTYyMzkwMjJ9.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
+// 1. Client sends the token
+const token =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjM0NTYiLCJpYXQiOjE1MTYyMzkwMjJ9.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
 
-// 2. 서버에서 토큰 검증
+// 2. Server verifies the token
 try {
   const decoded = jwt.verify(token, "mysecret123");
   console.log(decoded);
-  // 출력: { userId: "123456", iat: 1516239022, exp: 1516843822 }
+  // Output: { userId: "123456", iat: 1516239022, exp: 1516843822 }
 } catch (error) {
-  console.log("토큰이 유효하지 않음");
+  console.log("Token is invalid");
 }
 ```
 
-검증 과정에서 일어나는 일:
+What happens during verification:
 
-1. **토큰 분리**:
+1. **Token Splitting**:
+
 ```
 header = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
 payload = "eyJ1c2VySWQiOiIxMjM0NTYiLCJpYXQiOjE1MTYyMzkwMjJ9"
 signature = "SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
 ```
 
-2. **서명 검증**:
+2. **Signature Verification**:
+
 ```javascript
-// 1. 헤더와 페이로드 다시 해시
-const data = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjM0NTYiLCJpYXQiOjE1MTYyMzkwMjJ9";
+// 1. Re-hash the header and payload
+const data =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjM0NTYiLCJpYXQiOjE1MTYyMzkwMjJ9";
 const newSignature = HMACSHA256(data, "mysecret123");
 
-// 2. 새로 만든 서명과 토큰의 서명 비교
+// 2. Compare the newly created signature with the token's signature
 if (newSignature === signature) {
-  // 서명이 일치하면 페이로드 디코드
+  // If signatures match, decode the payload
   const decodedPayload = base64Decode(payload);
   // { userId: "123456", iat: 1516239022, exp: 1516843822 }
 } else {
-  // 서명이 일치하지 않으면 토큰이 변조된 것
+  // If signatures don't match, the token has been tampered with
   throw new Error("Invalid token");
 }
 ```
 
-### 3. 실제 사용 예시
+### 3. Practical Usage Example
 
 ```javascript
-// 1. 로그인 시 토큰 생성
+// 1. Token generation upon login
 const login = async (req, res) => {
   const { email, password } = req.body;
-  
-  // 사용자 확인
+
+  // Verify User
   const user = await User.findOne({ email });
   if (!user) return res.status(401).json({ message: "Invalid credentials" });
-  
-  // 비밀번호 확인
+
+  // Verify Password
   const isMatch = await user.comparePassword(password);
   if (!isMatch) return res.status(401).json({ message: "Invalid credentials" });
-  
-  // 토큰 생성
-  const token = jwt.sign(
-    { userId: user._id },
-    process.env.JWT_SECRET,
-    { expiresIn: '7d' }
-  );
-  
+
+  // Generate Token
+  const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+    expiresIn: "7d",
+  });
+
   res.json({ token });
 };
 
-// 2. 인증이 필요한 요청 처리
+// 2. Processing requests that require authentication
 const authMiddleware = (req, res, next) => {
-  // 토큰 추출
-  const token = req.headers.authorization?.split(' ')[1];
+  // Extract Token
+  const token = req.headers.authorization?.split(" ")[1];
   if (!token) return res.status(401).json({ message: "No token provided" });
-  
+
   try {
-    // 토큰 검증
+    // Verify Token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;  // 검증된 사용자 정보를 요청 객체에 추가
+    req.user = decoded; // Add verified user info to the request object
     next();
   } catch (error) {
     return res.status(401).json({ message: "Invalid token" });
@@ -293,428 +322,443 @@ const authMiddleware = (req, res, next) => {
 };
 ```
 
-이렇게 JWT는:
-1. 토큰 생성 시 페이로드를 Base64로 인코딩
-2. 서명은 JWT_SECRET으로 해시화
-3. 검증 시 서명을 다시 계산해서 비교
-4. 서명이 일치하면 페이로드 데이터 사용
+In summary, JWT:
 
-결론, JWT_SECRET 보안에 중요한 정보
+1. Encodes the payload as Base64 during token creation
+2. Hashes the signature using the `JWT_SECRET`
+3. Re-calculates and compares the signature during verification
+4. Uses the payload data only if the signature matches
 
+Conclusion: `JWT_SECRET` is critical security information
 
+---
 
-네, 2단계인 데이터베이스 부분으로 넘어가보겠습니다. 먼저 MongoDB 연결 설정과 모델 구조를 살펴보겠습니다.
+## Step 2: Database
 
-1. 먼저 MongoDB 연결 설정을 확인해보겠습니다:
+Let's move on to Step 2, the Database. First, we'll look at the MongoDB connection setup and model structure.
 
+### 1. MongoDB Connection Setup
 
-Ran tool
-2. 이제 모델들을 확인해보겠습니다:
-
-
-Ran tool
-User 모델을 먼저 살펴보겠습니다:
-
-
-Read file: backend/src/models/User.js
-Post 모델도 확인해보겠습니다:
-
-
-Read file: backend/src/models/Post.js
-데이터베이스 구조를 상세히 설명해드리겠습니다:
-
-### 1. MongoDB 연결 설정
 ```javascript
-// app.js에서
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('MongoDB Connected'))
-  .catch(err => console.error('MongoDB Connection Error:', err));
+// In app.js
+mongoose
+  .connect(process.env.MONGODB_URI)
+  .then(() => console.log("MongoDB Connected"))
+  .catch((err) => console.error("MongoDB Connection Error:", err));
 ```
 
-### 2. 모델 구조
+### 2. Model Structure
 
-#### A. User 모델
+#### A. User Model
+
 ```javascript
-const userSchema = new mongoose.Schema({
-  username: {
-    type: String,
-    required: true,
-    unique: true,
-    trim: true,
-    minlength: 3
+const userSchema = new mongoose.Schema(
+  {
+    username: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+      minlength: 3,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+      lowercase: true,
+    },
+    password: {
+      type: String,
+      required: true,
+      minlength: 6,
+    },
+    lastLoginAt: {
+      type: Date,
+      default: Date.now,
+    },
   },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    trim: true,
-    lowercase: true
+  {
+    timestamps: true, // Automatically generates createdAt, updatedAt
   },
-  password: {
-    type: String,
-    required: true,
-    minlength: 6
-  },
-  lastLoginAt: {
-    type: Date,
-    default: Date.now
-  }
-}, {
-  timestamps: true  // createdAt, updatedAt 자동 생성
-});
+);
 ```
 
-특징:
-- 비밀번호 자동 해싱 (bcrypt)
-- 이메일/사용자명 중복 방지
-- 마지막 로그인 시간 추적
-- 타임스탬프 자동 생성
+Features:
 
-#### B. Post 모델
+- Automatic password hashing (bcrypt)
+- Prevention of duplicate email/username
+- Tracking of last login time
+- Automatic timestamp generation
+
+#### B. Post Model
+
 ```javascript
-const postSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-    trim: true
+const postSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    content: {
+      type: String,
+      required: true,
+    },
+    author: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    tags: [
+      {
+        type: String,
+        trim: true,
+      },
+    ],
+    likes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    comments: [commentSchema],
   },
-  content: {
-    type: String,
-    required: true
+  {
+    timestamps: true,
   },
-  author: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
-  },
-  tags: [{
-    type: String,
-    trim: true
-  }],
-  likes: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
-  }],
-  comments: [commentSchema]
-}, {
-  timestamps: true
-});
+);
 ```
 
-특징:
-- 댓글 스키마 포함
-- 작성자 참조 (User 모델과 연결)
-- 태그 기능
-- 좋아요 기능
-- 타임스탬프 자동 생성
+Features:
 
-### 3. 관계 설정
-- Post와 User는 `ObjectId`로 연결
-- 댓글도 User와 연결
-- 좋아요도 User와 연결
+- Includes comment schema
+- Author reference (linked with User model)
+- Tagging functionality
+- Like functionality
+- Automatic timestamp generation
 
-### 4. 데이터베이스 작업 예시
+### 3. Relationship Setup
+
+- Post and User are linked by `ObjectId`.
+- Comments are also linked with User.
+- Likes are also linked with User.
+
+### 4. Database Operation Examples
 
 ```javascript
-// 사용자 생성
+// Create User
 const user = new User({
   username: "john_doe",
   email: "john@example.com",
-  password: "password123"
+  password: "password123",
 });
 await user.save();
 
-// 게시글 생성
+// Create Post
 const post = new Post({
   title: "My First Post",
   content: "Hello World!",
   author: user._id,
-  tags: ["first", "hello"]
+  tags: ["first", "hello"],
 });
 await post.save();
 
-// 게시글 조회 (작성자 정보 포함)
+// Lookup Post (including author info)
 const postWithAuthor = await Post.findById(postId)
-  .populate('author', 'username email')
-  .populate('comments.author', 'username');
+  .populate("author", "username email")
+  .populate("comments.author", "username");
 ```
 
-이 구조의 장점:
-1. 스키마 검증으로 데이터 무결성 보장
-2. 자동 타임스탬프로 시간 추적 용이
-3. 관계 설정으로 데이터 조회 편리
-4. 비밀번호 자동 해싱으로 보안 강화
+Advantages of this structure:
 
-## Bcrypt 설명
+1. Schema validation ensures data integrity
+2. Automatic timestamps make time tracking easy
+3. Relationship settings make data lookup convenient
+4. Automatic password hashing strengthens security
 
-아, 좋은 질문입니다! bcrypt의 해시값에는 솔트가 포함되어 있습니다. 
+## Bcrypt Explanation
 
-bcrypt로 해시된 비밀번호의 구조를 보면:
+Ah, great question! The bcrypt hash value includes the salt.
+
+Looking at a password hashed with bcrypt:
+
 ```
 $2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy
 ```
 
-이 문자열은 다음과 같이 구성됩니다:
-1. `$2a$` - 알고리즘 버전
-2. `10` - 해시 강도 (cost factor)
-3. `N9qo8uLOickgx2ZMRZoMye` - 22자리 솔트
-4. `IjZAgcfl7p92ldGxad68LJZdL17lhWy` - 실제 해시값
+This string is composed as follows:
 
-따라서 `bcrypt.compare()`가 동작하는 과정은:
+1. `$2a$` - Algorithm version
+2. `10` - Hash cost factor
+3. `N9qo8uLOickgx2ZMRZoMye` - 22-character salt
+4. `IjZAgcfl7p92ldGxad68LJZdL17lhWy` - The actual hash value
 
-1. 저장된 해시값에서 솔트를 추출
-2. 입력된 비밀번호와 추출한 솔트를 사용해 해시 생성
-3. 새로 생성된 해시와 저장된 해시 비교
+Therefore, the process for `bcrypt.compare()` is:
 
-예시 코드로 보면:
+1. Extract the salt from the stored hash value
+2. Generate a hash using the entered password and the extracted salt
+3. Compare the newly generated hash with the stored hash
+
+In example code:
+
 ```javascript
-// 1. 비밀번호 저장 시
+// 1. When saving a password
 const password = "password123";
 const salt = await bcrypt.genSalt(10);
 const hash = await bcrypt.hash(password, salt);
 // hash = "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy"
 
-// 2. 비밀번호 검증 시
+// 2. When verifying a password
 const isMatch = await bcrypt.compare("password123", hash);
-// 내부적으로:
-// 1. hash에서 솔트 추출 ("N9qo8uLOickgx2ZMRZoMye")
-// 2. "password123" + "N9qo8uLOickgx2ZMRZoMye"로 새 해시 생성
-// 3. 새 해시와 저장된 해시 비교
+// Internally:
+// 1. Extract salt from hash ("N9qo8uLOickgx2ZMRZoMye")
+// 2. Generate new hash with "password123" + "N9qo8uLOickgx2ZMRZoMye"
+// 3. Compare new hash with stored hash
 ```
 
-이렇게 솔트를 해시값에 포함시켜 저장하기 때문에:
-1. 별도로 솔트를 저장할 필요가 없음
-2. 같은 비밀번호라도 다른 해시값 생성
-3. 해시값만으로도 검증 가능
+Because the salt is included in the hash value:
 
-아니요, 솔트를 해시값에 포함하는 것은 보안상 취약점이 아닙니다. 오히려 이는 bcrypt의 중요한 보안 특징 중 하나입니다.
+1. No need to store the salt separately
+2. Different hash values are generated even for the same password
+3. Verification is possible with just the hash value
 
-그 이유를 설명드리면:
+Is including the salt in the hash a vulnerability? No. This is a key security feature of bcrypt.
 
-1. **솔트의 목적**:
-   - 솔트는 같은 비밀번호라도 다른 해시값을 만들기 위함
-   - 레인보우 테이블 공격을 방지하기 위함
-   - 솔트 자체는 비밀번호를 보호하는 것이 아님
+I will explain the reasons:
 
-2. **해시값의 구조**:
+1. **Purpose of Salt**:
+   - Salt exists to create different hashes even for the same password
+   - It exists to prevent rainbow table attacks
+   - Salt itself is not meant to protect the password
+
+2. **Structure of Hash Value**:
+
 ```
 $2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy
 ```
-- 솔트가 노출되어도 비밀번호를 역산할 수 없음
-- bcrypt는 단방향 해시 함수이기 때문
 
-3. **공격 시나리오**:
-   - 공격자가 해시값을 얻었다고 가정
-   - 솔트를 알 수 있지만:
-     - 비밀번호를 모름
-     - 해시 함수가 단방향
-     - 각 사용자마다 다른 솔트 사용
-   - 따라서 무차별 대입 공격만 가능
-   - 하지만 bcrypt는 의도적으로 느린 해시 함수
+- Even if the salt is exposed, the password cannot be reverse-engineered
+- This is because bcrypt is a one-way hash function
 
-4. **bcrypt의 보안 강화 요소**:
-   - 단방향 해시 (역산 불가)
-   - 의도적으로 느린 해시 함수
-   - 각 사용자마다 다른 솔트
-   - cost factor로 해시 강도 조절
+3. **Attack Scenario**:
+   - Assume an attacker obtained the hash value
+   - They can know the salt, but:
+     - They don't know the password
+     - The hash function is one-way
+     - Every user has a different salt
+   - Therefore, only brute force attacks are possible
+   - However, bcrypt is an intentionally slow hash function
 
-예를 들어:
+4. **Security Strength Factors of bcrypt**:
+   - One-way hash (irreversible)
+   - Intentionally slow hash function
+   - Different salt for every user
+   - Hash strength adjustable with cost factor
+
+Example:
+
 ```javascript
-// 사용자 A의 비밀번호 "password123"
-const hashA = "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy"
+// User A's password "password123"
+const hashA = "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy";
 
-// 사용자 B의 같은 비밀번호 "password123"
-const hashB = "$2a$10$DifferentSaltHereDifferentHashValue"
+// User B's same password "password123"
+const hashB = "$2a$10$DifferentSaltHereDifferentHashValue";
 
-// 두 해시값이 완전히 다름
-// 솔트가 노출되어도 비밀번호를 알 수 없음
+// Both hash values are completely different
+// Even if the salt is exposed, the password cannot be known
 ```
 
-이것이 안전한 이유:
-1. 솔트는 비밀번호를 보호하는 것이 아님
-2. 솔트는 해시값의 다양성을 보장하는 것
-3. 실제 비밀번호는 해시 함수로 보호됨
-4. bcrypt는 의도적으로 느린 해시 함수 사용
+This is why it's safe:
 
-## Populate 사용 이유
-populate를 사용하는 이유는 MongoDB의 참조 관계를 처리하기 위해서입니다. 
+1. Salt is not meant to protect the password
+2. Salt is meant to ensure diversity of the hash value
+3. The actual password is protected by the hash function
+4. bcrypt uses an intentionally slow hash function
 
-Post 모델을 보면:
+## Why Use Populate?
+
+`populate` is used to handle reference relationships in MongoDB.
+
+In the Post model:
+
 ```javascript
 const postSchema = new mongoose.Schema({
   author: {
-    type: mongoose.Schema.Types.ObjectId,  // User 모델의 ID만 저장
-    ref: 'User',
-    required: true
+    type: mongoose.Schema.Types.ObjectId, // Stores only the User model ID
+    ref: "User",
+    required: true,
   },
-  comments: [{
-    author: {
-      type: mongoose.Schema.Types.ObjectId,  // User 모델의 ID만 저장
-      ref: 'User',
-      required: true
-    }
-  }]
+  comments: [
+    {
+      author: {
+        type: mongoose.Schema.Types.ObjectId, // Stores only the User model ID
+        ref: "User",
+        required: true,
+      },
+    },
+  ],
 });
 ```
 
-여기서 `author`와 `comments.author`는 실제 User 객체가 아닌, User의 ID만 저장하고 있습니다. 
+Here, `author` and `comments.author` store only the User's ID, not the actual User object.
 
-예를 들어:
+Example:
+
 ```javascript
-// DB에 저장된 실제 데이터
+// Actual data stored in DB
 {
   _id: "post123",
   title: "My Post",
-  author: "user456",  // User의 ID만 저장
+  author: "user456",  // Only User ID is stored
   comments: [
     {
       content: "Great post!",
-      author: "user789"  // User의 ID만 저장
+      author: "user789"  // Only User ID is stored
     }
   ]
 }
 ```
 
-이때 `populate`를 사용하지 않으면:
+If you don't use `populate`:
+
 ```javascript
 const post = await Post.findById(req.params.id);
-// 결과:
+// Result:
 {
   _id: "post123",
   title: "My Post",
-  author: "user456",  // ID만 있음
+  author: "user456",  // Only ID exists
   comments: [
     {
       content: "Great post!",
-      author: "user789"  // ID만 있음
+      author: "user789"  // Only ID exists
     }
   ]
 }
 ```
 
-`populate`를 사용하면:
+If you use `populate`:
+
 ```javascript
 const post = await Post.findById(req.params.id)
-  .populate('author', 'username')  // author 필드의 ID를 실제 User 객체로 변환
-  .populate('comments.author', 'username');  // comments의 author도 변환
+  .populate('author', 'username')  // Convert author field ID to actual User object
+  .populate('comments.author', 'username');  // Also convert author in comments
 
-// 결과:
+// Result:
 {
   _id: "post123",
   title: "My Post",
   author: {
     _id: "user456",
-    username: "john_doe"  // 실제 사용자 정보
+    username: "john_doe"  // Actual user info
   },
   comments: [
     {
       content: "Great post!",
       author: {
         _id: "user789",
-        username: "jane_doe"  // 실제 사용자 정보
+        username: "jane_doe"  // Actual user info
       }
     }
   ]
 }
 ```
 
-이렇게 하는 이유는:
-1. **데이터 정규화**: 중복 데이터 저장 방지
-2. **데이터 일관성**: 사용자 정보가 변경되어도 한 곳만 수정
-3. **효율적인 저장**: 필요한 정보만 저장
-4. **유연한 조회**: 필요한 정보만 선택적으로 가져오기 가능
+The reasons for doing this:
 
-`select: 'username'`을 사용하는 이유는:
-1. 필요한 필드만 가져와서 네트워크 트래픽 감소
-2. 민감한 정보(이메일, 비밀번호 등) 노출 방지
-3. 응답 데이터 크기 최적화
+1. **Data Normalization**: Prevent duplicate data storage
+2. **Data Consistency**: Changes to user info reflect in one place
+3. **Efficient Storage**: Store only necessary info
+4. **Flexible Lookup**: Selectively retrieve only necessary information
 
+The reason for using `select: 'username'`:
 
-## 3단계: 인증 시스템
+1. Reduce network traffic by retrieving only required fields
+2. Prevent exposure of sensitive data (email, password, etc.)
+3. Optimize response data size
 
-네, 3단계인 인증 시스템을 살펴보겠습니다. 먼저 관련 파일들을 확인해보겠습니다:
+---
 
-1. 먼저 인증 관련 컨트롤러를 확인해보겠습니다:
+## Step 3: Authentication System
 
+Yes, we will look into Step 3, the Authentication System.
 
-Read file: backend/src/controllers/userController.js
-2. 인증 미들웨어도 확인해보겠습니다:
+### 1. Registration (Register)
 
-
-Read file: backend/src/middleware/auth.js
-인증 시스템을 단계별로 설명해드리겠습니다:
-
-### 1. 회원가입 (Register)
 ```javascript
 // backend/src/controllers/userController.js
 const register = async (req, res) => {
   try {
     const { username, email, password } = req.body;
 
-    // 1. 중복 사용자 확인
+    // 1. Check for duplicate user
     const existingUser = await User.findOne({ $or: [{ email }, { username }] });
     if (existingUser) {
-      return res.status(400).json({ message: 'User already exists' });
+      return res.status(400).json({ message: "User already exists" });
     }
 
-    // 2. 새 사용자 생성
+    // 2. Create new user
     const user = new User({ username, email, password });
     await user.save();
 
-    // 3. JWT 토큰 생성
+    // 3. Generate JWT Token
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-      expiresIn: '7d'
+      expiresIn: "7d",
     });
 
-    // 4. 응답
+    // 4. Response
     res.status(201).json({
-      message: 'User registered successfully',
+      message: "User registered successfully",
       token,
       user: {
         _id: user._id,
         username: user.username,
         email: user.email,
         createdAt: user.createdAt,
-        updatedAt: user.updatedAt
-      }
+        updatedAt: user.updatedAt,
+      },
     });
   } catch (error) {
-    res.status(500).json({ message: 'Error registering user', error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error registering user", error: error.message });
   }
 };
 ```
 
-### 2. 로그인 (Login)
+### 2. Login (Login)
+
 ```javascript
 // backend/src/controllers/userController.js
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // 1. 사용자 찾기
+    // 1. Find User
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(401).json({ message: 'Invalid credentials' });
+      return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    // 2. 비밀번호 확인
+    // 2. Verify Password
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
-      return res.status(401).json({ message: 'Invalid credentials' });
+      return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    // 3. 마지막 로그인 시간 업데이트
+    // 3. Update Last Login Time
     user.lastLoginAt = new Date();
     await user.save();
 
-    // 4. JWT 토큰 생성
+    // 4. Generate JWT Token
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-      expiresIn: '7d'
+      expiresIn: "7d",
     });
 
-    // 5. 응답
+    // 5. Response
     res.json({
-      message: 'Login successful',
+      message: "Login successful",
       token,
       user: {
         _id: user._id,
@@ -722,55 +766,57 @@ const login = async (req, res) => {
         email: user.email,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
-        lastLoginAt: user.lastLoginAt
-      }
+        lastLoginAt: user.lastLoginAt,
+      },
     });
   } catch (error) {
-    res.status(500).json({ message: 'Error logging in', error: error.message });
+    res.status(500).json({ message: "Error logging in", error: error.message });
   }
 };
 ```
 
-### 3. 인증 미들웨어
+### 3. Auth Middleware
+
 ```javascript
 // backend/src/middleware/auth.js
 const auth = async (req, res, next) => {
   try {
-    // 1. 토큰 추출
-    const token = req.header('Authorization')?.replace('Bearer ', '');
-    
+    // 1. Extract Token
+    const token = req.header("Authorization")?.replace("Bearer ", "");
+
     if (!token) {
       throw new Error();
     }
 
-    // 2. 토큰 검증
+    // 2. Verify Token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    
-    // 3. 사용자 확인
+
+    // 3. Verify User
     const user = await User.findById(decoded.userId);
     if (!user) {
       throw new Error();
     }
 
-    // 4. 요청 객체에 사용자 정보 추가
+    // 4. Add User Info to Request Object
     req.user = user;
     req.token = token;
     next();
   } catch (error) {
-    res.status(401).json({ message: 'Please authenticate' });
+    res.status(401).json({ message: "Please authenticate" });
   }
 };
 ```
 
-### 4. 사용자 프로필 조회
+### 4. User Profile Lookup
+
 ```javascript
 // backend/src/controllers/userController.js
 const getProfile = async (req, res) => {
   try {
-    // 1. 사용자 정보 조회 (비밀번호 제외)
-    const user = await User.findById(req.user._id).select('-password');
-    
-    // 2. 응답
+    // 1. Lookup User Info (exclude password)
+    const user = await User.findById(req.user._id).select("-password");
+
+    // 2. Response
     res.json({
       user: {
         _id: user._id,
@@ -778,212 +824,213 @@ const getProfile = async (req, res) => {
         email: user.email,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
-        lastLoginAt: user.lastLoginAt
-      }
+        lastLoginAt: user.lastLoginAt,
+      },
     });
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching profile', error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error fetching profile", error: error.message });
   }
 };
 ```
 
-이 인증 시스템의 특징:
-1. JWT 기반 인증
-2. 비밀번호 해싱 (bcrypt)
-3. 토큰 만료 시간 설정 (7일)
-4. 마지막 로그인 시간 추적
-5. 민감한 정보 제외 (비밀번호 등)
+Features of this authentication system:
 
-API 엔드포인트:
-- POST `/api/users/register` - 회원가입
-- POST `/api/users/login` - 로그인
-- GET `/api/users/profile` - 프로필 조회 (인증 필요)
+1. JWT-based authentication
+2. Password hashing (bcrypt)
+3. Token expiration setup (7 days)
+4. Tracking of last login time
+5. Exclusion of sensitive information (password, etc.)
 
+API Endpoints:
 
-## auth.js 동작 방식
+- POST `/api/users/register` - Registration
+- POST `/api/users/login` - Login
+- GET `/api/users/profile` - Profile lookup (Authentication required)
 
-아, 네! 라우팅부터 시작해서 전체 인증 흐름을 설명해드리겠습니다.
+## auth.js Operation
 
-먼저 라우트 파일들을 확인해보겠습니다:
+Ah, yes! I will explain the entire authentication flow starting from routing.
 
-
-Read file: backend/src/routes/userRoutes.js
-
-Read file: backend/src/routes/postRoutes.js
-전체 인증 흐름을 설명해드리겠습니다:
-
-### 1. 라우트 설정
+### 1. Route Configuration
 
 ```javascript
 // backend/src/routes/userRoutes.js
 const router = express.Router();
 
-// 인증이 필요없는 라우트
-router.post('/register', register);  // 회원가입
-router.post('/login', login);        // 로그인
+// Routes that don't require authentication
+router.post("/register", register); // Registration
+router.post("/login", login); // Login
 
-// 인증이 필요한 라우트
-router.get('/profile', auth, getProfile);  // 프로필 조회
+// Routes that require authentication
+router.get("/profile", auth, getProfile); // Profile lookup
 ```
 
 ```javascript
 // backend/src/routes/postRoutes.js
 const router = express.Router();
 
-// 인증이 필요없는 라우트
-router.get('/', getPosts);           // 게시글 목록 조회
-router.get('/:id', getPost);         // 게시글 상세 조회
+// Routes that don't require authentication
+router.get("/", getPosts); // Post list lookup
+router.get("/:id", getPost); // Post detail lookup
 
-// 인증이 필요한 라우트
-router.post('/', auth, createPost);  // 게시글 작성
-router.put('/:id', auth, updatePost);  // 게시글 수정
-router.delete('/:id', auth, deletePost);  // 게시글 삭제
-// ... 기타 인증 필요한 라우트들
+// Routes that require authentication
+router.post("/", auth, createPost); // Create post
+router.put("/:id", auth, updatePost); // Edit post
+router.delete("/:id", auth, deletePost); // Delete post
+// ... other routes requiring authentication
 ```
 
-### 2. 인증 미들웨어 동작
+### 2. Auth Middleware Operation
 
 ```javascript
 // backend/src/middleware/auth.js
 const auth = async (req, res, next) => {
   try {
-    // 1. Authorization 헤더에서 토큰 추출
-    const token = req.header('Authorization')?.replace('Bearer ', '');
-    
+    // 1. Extract Token from Authorization header
+    const token = req.header("Authorization")?.replace("Bearer ", "");
+
     if (!token) {
       throw new Error();
     }
 
-    // 2. 토큰 검증
+    // 2. Verify Token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    
-    // 3. 사용자 확인
+
+    // 3. Verify User
     const user = await User.findById(decoded.userId);
     if (!user) {
       throw new Error();
     }
 
-    // 4. 요청 객체에 사용자 정보 추가
+    // 4. Add User Info to Request Object
     req.user = user;
     req.token = token;
-    next();  // 다음 미들웨어/컨트롤러로 진행
+    next(); // Proceed to next middleware/controller
   } catch (error) {
-    res.status(401).json({ message: 'Please authenticate' });
+    res.status(401).json({ message: "Please authenticate" });
   }
 };
 ```
 
-### 3. 전체 요청 처리 흐름
+### 3. Overall Request Processing Flow
 
-1. **인증이 필요없는 요청** (예: 게시글 목록 조회)
-```
-클라이언트 → GET /api/posts → Express 라우터 → getPosts 컨트롤러 → 응답
-```
+1. **Request not requiring authentication** (e.g., Post list lookup)
 
-2. **인증이 필요한 요청** (예: 게시글 작성)
 ```
-클라이언트 → POST /api/posts → Express 라우터 → auth 미들웨어 → createPost 컨트롤러 → 응답
+Client → GET /api/posts → Express Router → getPosts Controller → Response
 ```
 
-### 4. 실제 동작 예시
+2. **Request requiring authentication** (e.g., Create post)
+
+```
+Client → POST /api/posts → Express Router → auth Middleware → createPost Controller → Response
+```
+
+### 4. Practical Operation Example
 
 ```javascript
-// 1. 게시글 목록 조회 (인증 불필요)
-fetch('/api/posts')
-  .then(res => res.json())
-  .then(posts => console.log(posts));
+// 1. Post list lookup (Authentication not required)
+fetch("/api/posts")
+  .then((res) => res.json())
+  .then((posts) => console.log(posts));
 
-// 2. 게시글 작성 (인증 필요)
-fetch('/api/posts', {
-  method: 'POST',
+// 2. Create post (Authentication required)
+fetch("/api/posts", {
+  method: "POST",
   headers: {
-    'Authorization': `Bearer ${token}`,
-    'Content-Type': 'application/json'
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
   },
   body: JSON.stringify({
-    title: 'New Post',
-    content: 'Hello World'
-  })
+    title: "New Post",
+    content: "Hello World",
+  }),
 })
-.then(res => res.json())
-.then(post => console.log(post));
+  .then((res) => res.json())
+  .then((post) => console.log(post));
 ```
 
-### 5. 인증 실패 시
+### 5. Upon Authentication Failure
 
 ```javascript
-// 토큰이 없거나 유효하지 않은 경우
-fetch('/api/posts', {
-  method: 'POST',
+// If token is missing or invalid
+fetch("/api/posts", {
+  method: "POST",
   headers: {
-    'Authorization': 'Bearer invalid_token'
-  }
-})
-.then(res => {
+    Authorization: "Bearer invalid_token",
+  },
+}).then((res) => {
   if (res.status === 401) {
-    // 인증 실패
-    // 로그인 페이지로 리다이렉트
+    // Authentication failure
+    // Redirect to login page
   }
 });
 ```
 
-이렇게:
-1. 라우트에서 `auth` 미들웨어를 사용할지 결정
-2. 인증이 필요한 요청은 `auth` 미들웨어를 통과
-3. `auth` 미들웨어는 토큰 검증 후 사용자 정보를 요청 객체에 추가
-4. 컨트롤러는 `req.user`를 통해 사용자 정보 사용
+So:
 
+1. Decide whether to use `auth` middleware in the route
+2. Requests requiring authentication must pass through `auth` middleware
+3. `auth` middleware adds user info to the request object after token verification
+4. Controller uses user info via `req.user`
 
-## 4단계: API 엔드포인트
+---
 
-네, 4단계인 API 엔드포인트를 살펴보겠습니다. 먼저 현재 구현된 API 엔드포인트들을 확인해보겠습니다.
+## Step 4: API Endpoints
 
-### 1. Users API 엔드포인트
+Yes, we will look into Step 4, the API Endpoints. First, we'll check the currently implemented API endpoints.
+
+### 1. Users API Endpoints
+
 ```javascript
 // backend/src/routes/userRoutes.js
 const router = express.Router();
 
-// 인증이 필요없는 엔드포인트
-router.post('/register', register);  // 회원가입
-router.post('/login', login);        // 로그인
+// Endpoints that don't require authentication
+router.post("/register", register); // Registration
+router.post("/login", login); // Login
 
-// 인증이 필요한 엔드포인트
-router.get('/profile', auth, getProfile);  // 프로필 조회
+// Endpoints that require authentication
+router.get("/profile", auth, getProfile); // Profile lookup
 ```
 
-### 2. Posts API 엔드포인트
+### 2. Posts API Endpoints
+
 ```javascript
 // backend/src/routes/postRoutes.js
 const router = express.Router();
 
-// 인증이 필요없는 엔드포인트
-router.get('/', getPosts);           // 게시글 목록 조회
-router.get('/:id', getPost);         // 게시글 상세 조회
+// Endpoints that don't require authentication
+router.get("/", getPosts); // Post list lookup
+router.get("/:id", getPost); // Post detail lookup
 
-// 인증이 필요한 엔드포인트
-router.post('/', auth, createPost);  // 게시글 작성
-router.put('/:id', auth, updatePost);  // 게시글 수정
-router.delete('/:id', auth, deletePost);  // 게시글 삭제
+// Endpoints that require authentication
+router.post("/", auth, createPost); // Create post
+router.put("/:id", auth, updatePost); // Edit post
+router.delete("/:id", auth, deletePost); // Delete post
 
-// 댓글 관련 엔드포인트
-router.post('/:id/comments', auth, addComment);  // 댓글 작성
-router.put('/:id/comments/:commentId', auth, editComment);  // 댓글 수정
-router.delete('/:id/comments/:commentId', auth, deleteComment);  // 댓글 삭제
+// Comment-related endpoints
+router.post("/:id/comments", auth, addComment); // Write comment
+router.put("/:id/comments/:commentId", auth, editComment); // Edit comment
+router.delete("/:id/comments/:commentId", auth, deleteComment); // Delete comment
 
-// 답글 관련 엔드포인트
-router.post('/:id/comments/:commentId/replies', auth, addReply);  // 답글 작성
-router.put('/:id/comments/:commentId/replies/:replyId', auth, editReply);  // 답글 수정
-router.delete('/:id/comments/:commentId/replies/:replyId', auth, deleteReply);  // 답글 삭제
+// Reply-related endpoints
+router.post("/:id/comments/:commentId/replies", auth, addReply); // Write reply
+router.put("/:id/comments/:commentId/replies/:replyId", auth, editReply); // Edit reply
+router.delete("/:id/comments/:commentId/replies/:replyId", auth, deleteReply); // Delete reply
 
-// 좋아요 관련 엔드포인트
-router.post('/:id/like', auth, likePost);  // 게시글 좋아요
+// Like-related endpoints
+router.post("/:id/like", auth, likePost); // Like post
 ```
 
-### 3. API 요청/응답 예시
+### 3. API Request/Response Examples
 
-#### A. 회원가입
+#### A. Registration
+
 ```javascript
-// 요청
+// Request
 POST /api/users/register
 {
   "username": "john_doe",
@@ -991,7 +1038,7 @@ POST /api/users/register
   "password": "password123"
 }
 
-// 응답
+// Response
 {
   "message": "User registered successfully",
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
@@ -1005,9 +1052,10 @@ POST /api/users/register
 }
 ```
 
-#### B. 게시글 작성
+#### B. Create Post
+
 ```javascript
-// 요청
+// Request
 POST /api/posts
 Headers: {
   "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
@@ -1018,7 +1066,7 @@ Headers: {
   "tags": ["first", "hello"]
 }
 
-// 응답
+// Response
 {
   "message": "Post created successfully",
   "post": {
@@ -1035,9 +1083,10 @@ Headers: {
 }
 ```
 
-#### C. 댓글 작성
+#### C. Write Comment
+
 ```javascript
-// 요청
+// Request
 POST /api/posts/post123/comments
 Headers: {
   "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
@@ -1046,7 +1095,7 @@ Headers: {
   "content": "Great post!"
 }
 
-// 응답
+// Response
 {
   "message": "Comment added successfully",
   "comment": {
@@ -1061,7 +1110,7 @@ Headers: {
 }
 ```
 
-### 4. 에러 처리
+### 4. Error Processing
 
 ```javascript
 // 400 Bad Request
@@ -1095,137 +1144,134 @@ Headers: {
 }
 ```
 
-### 5. RESTful API 설계 원칙
+### 5. RESTful API Design Principles
 
-1. **리소스 기반 URL**:
-   - `/api/posts` - 게시글 리소스
-   - `/api/posts/:id/comments` - 댓글 리소스
+1. **Resource-based URL**:
+   - `/api/posts` - Post resource
+   - `/api/posts/:id/comments` - Comment resource
 
-2. **HTTP 메서드 사용**:
-   - GET: 조회
-   - POST: 생성
-   - PUT: 수정
-   - DELETE: 삭제
+2. **HTTP Method Usage**:
+   - GET: Lookup
+   - POST: Create
+   - PUT: Edit
+   - DELETE: Delete
 
-3. **계층 구조**:
-   - 게시글 → 댓글 → 답글
+3. **Hierarchical Structure**:
+   - Post → Comment → Reply
 
-4. **일관된 응답 형식**:
-   - 성공: `{ message, data }`
-   - 실패: `{ message, error }`
+4. **Consistent Response Format**:
+   - Success: `{ message, data }`
+   - Failure: `{ message, error }`
 
-5. **상태 코드 사용**:
-   - 200: 성공
-   - 201: 생성 성공
-   - 400: 잘못된 요청
-   - 401: 인증 필요
-   - 403: 권한 없음
-   - 404: 리소스 없음
-   - 500: 서버 에러
+5. **Status Code Usage**:
+   - 200: Success
+   - 201: Creation success
+   - 400: Bad request
+   - 401: Authentication required
+   - 403: No permission
+   - 404: No resource
+   - 500: Server error
 
-이 API 구조의 장점:
-1. 직관적인 URL 구조
-2. 일관된 응답 형식
-3. 명확한 에러 처리
-4. 계층적 리소스 구조
-5. RESTful 원칙 준수
+Advantages of this API structure:
+
+1. Intuitive URL structure
+2. Consistent response format
+3. Clear error processing
+4. Hierarchical resource structure
+5. Compliance with RESTful principles
 
 ## UserController
 
-네, userController.js의 전체 내용을 살펴보겠습니다:
+Yes, we will look into the entire content of `userController.js`.
 
+I will explain each function in `userController.js` in detail:
 
-Read file: backend/src/controllers/userController.js
-userController.js의 각 함수를 상세히 설명해드리겠습니다:
+### 1. Registration (register)
 
-### 1. 회원가입 (register)
 ```javascript
 // backend/src/controllers/userController.js
 const register = async (req, res) => {
   try {
-    // 1. 요청 데이터 추출
+    // 1. Extract request data
     const { username, email, password } = req.body;
 
-    // 2. 중복 사용자 확인
-    const existingUser = await User.findOne({ 
-      $or: [{ email }, { username }] 
+    // 2. Check for duplicate user
+    const existingUser = await User.findOne({
+      $or: [{ email }, { username }],
     });
     if (existingUser) {
-      return res.status(400).json({ 
-        message: 'User already exists' 
+      return res.status(400).json({
+        message: "User already exists",
       });
     }
 
-    // 3. 새 사용자 생성
+    // 3. Create new user
     const user = new User({ username, email, password });
     await user.save();
 
-    // 4. JWT 토큰 생성
-    const token = jwt.sign(
-      { userId: user._id }, 
-      process.env.JWT_SECRET,
-      { expiresIn: '7d' }
-    );
+    // 4. Generate JWT Token
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
 
-    // 5. 응답
+    // 5. Response
     res.status(201).json({
-      message: 'User registered successfully',
+      message: "User registered successfully",
       token,
       user: {
         _id: user._id,
         username: user.username,
         email: user.email,
         createdAt: user.createdAt,
-        updatedAt: user.updatedAt
-      }
+        updatedAt: user.updatedAt,
+      },
     });
   } catch (error) {
-    res.status(500).json({ 
-      message: 'Error registering user', 
-      error: error.message 
+    res.status(500).json({
+      message: "Error registering user",
+      error: error.message,
     });
   }
 };
 ```
 
-### 2. 로그인 (login)
+### 2. Login (login)
+
 ```javascript
 // backend/src/controllers/userController.js
 const login = async (req, res) => {
   try {
-    // 1. 요청 데이터 추출
+    // 1. Extract request data
     const { email, password } = req.body;
 
-    // 2. 사용자 찾기
+    // 2. Find User
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(401).json({ 
-        message: 'Invalid credentials' 
+      return res.status(401).json({
+        message: "Invalid credentials",
       });
     }
 
-    // 3. 비밀번호 확인
+    // 3. Verify Password
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
-      return res.status(401).json({ 
-        message: 'Invalid credentials' 
+      return res.status(401).json({
+        message: "Invalid credentials",
       });
     }
 
-    // 4. 마지막 로그인 시간 업데이트
+    // 4. Update last login time
     user.lastLoginAt = new Date();
     await user.save();
 
-    // 5. JWT 토큰 생성
-    const token = jwt.sign(
-      { userId: user._id }, 
-      process.env.JWT_SECRET,
-      { expiresIn: '7d' }
-    );
+    // 5. Generate JWT Token
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
 
-    // 6. 응답
+    // 6. Response
     res.json({
-      message: 'Login successful',
+      message: "Login successful",
       token,
       user: {
         _id: user._id,
@@ -1233,28 +1279,28 @@ const login = async (req, res) => {
         email: user.email,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
-        lastLoginAt: user.lastLoginAt
-      }
+        lastLoginAt: user.lastLoginAt,
+      },
     });
   } catch (error) {
-    res.status(500).json({ 
-      message: 'Error logging in', 
-      error: error.message 
+    res.status(500).json({
+      message: "Error logging in",
+      error: error.message,
     });
   }
 };
 ```
 
-### 3. 프로필 조회 (getProfile)
+### 3. Profile Lookup (getProfile)
+
 ```javascript
 // backend/src/controllers/userController.js
 const getProfile = async (req, res) => {
   try {
-    // 1. 사용자 정보 조회 (비밀번호 제외)
-    const user = await User.findById(req.user._id)
-      .select('-password');
+    // 1. Lookup user info (exclude password)
+    const user = await User.findById(req.user._id).select("-password");
 
-    // 2. 응답
+    // 2. Response
     res.json({
       user: {
         _id: user._id,
@@ -1262,89 +1308,92 @@ const getProfile = async (req, res) => {
         email: user.email,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
-        lastLoginAt: user.lastLoginAt
-      }
+        lastLoginAt: user.lastLoginAt,
+      },
     });
   } catch (error) {
-    res.status(500).json({ 
-      message: 'Error fetching profile', 
-      error: error.message 
+    res.status(500).json({
+      message: "Error fetching profile",
+      error: error.message,
     });
   }
 };
 ```
 
-### 주요 특징
+### Key Features
 
-1. **에러 처리**:
-   - try-catch로 모든 에러 처리
-   - 적절한 HTTP 상태 코드 사용
-   - 에러 메시지 포함
+1. **Error Processing**:
+   - Process all errors with try-catch
+   - Use appropriate HTTP status codes
+   - Include error messages
 
-2. **보안**:
-   - 비밀번호는 응답에 포함하지 않음
-   - JWT 토큰 사용
-   - 중복 사용자 확인
+2. **Security**:
+   - Password not included in responses
+   - Use JWT tokens
+   - Check for duplicate users
 
-3. **데이터 검증**:
-   - 이메일/사용자명 중복 확인
-   - 비밀번호 검증
+3. **Data Verification**:
+   - Confirm email/username duplication
+   - Verify password
 
-4. **응답 형식**:
-   - 일관된 JSON 응답 구조
-   - 필요한 정보만 포함
-   - 명확한 메시지
+4. **Response Format**:
+   - Consistent JSON response structure
+   - Include only necessary info
+   - Clear messages
 
-5. **상태 코드**:
-   - 201: 생성 성공
-   - 400: 잘못된 요청
-   - 401: 인증 실패
-   - 500: 서버 에러
+5. **Status Codes**:
+   - 201: Creation success
+   - 400: Bad request
+   - 401: Authentication failure
+   - 500: Server error
 
-## 5단계: 미들웨어
+---
 
-네, 5단계인 미들웨어 부분을 살펴보겠습니다. 먼저 app.js에서 미들웨어 설정을 확인해보겠습니다:
+## Step 5: Middleware
 
+Yes, we will look into Step 5, the Middleware. First, we'll check the middleware configuration in `app.js`.
 
-Read file: backend/src/app.js
-미들웨어를 세 가지 주요 부분으로 나누어 설명해드리겠습니다:
+I will explain the middleware by dividing them into three major parts:
 
-### 1. CORS 설정
+### 1. CORS Configuration
+
 ```javascript
 // backend/src/app.js
 const corsOptions = {
-  // 1. 허용된 오리진 설정
+  // 1. Allowed origin setup
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));
+      callback(new Error("Not allowed by CORS"));
     }
   },
-  
-  // 2. 허용된 HTTP 메서드
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  
-  // 3. 허용된 헤더
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  
-  // 4. 인증 정보 허용
+
+  // 2. Allowed HTTP methods
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+
+  // 3. Allowed headers
+  allowedHeaders: ["Content-Type", "Authorization"],
+
+  // 4. Allow authentication info
   credentials: true,
-  
-  // 5. OPTIONS 요청 상태 코드
-  optionsSuccessStatus: 200
+
+  // 5. OPTIONS request status code
+  optionsSuccessStatus: 200,
 };
 
 app.use(cors(corsOptions));
 ```
 
-CORS 설정의 특징:
-1. 특정 도메인만 허용
-2. 필요한 HTTP 메서드만 허용
-3. 필요한 헤더만 허용
-4. 인증 정보 전송 허용
+Features of CORS configuration:
 
-### 2. 로깅 미들웨어
+1. Allow only specific domains
+2. Allow only necessary HTTP methods
+3. Allow only necessary headers
+4. Allow transmission of authentication info
+
+### 2. Logging Middleware
+
 ```javascript
 // backend/src/app.js
 app.use((req, res, next) => {
@@ -1353,472 +1402,501 @@ app.use((req, res, next) => {
 });
 ```
 
-로깅 미들웨어의 특징:
-1. 모든 요청 기록
-2. 타임스탬프 포함
-3. HTTP 메서드와 URL 기록
-4. 비동기 처리 지원
+Features of logging middleware:
 
-### 3. 에러 처리 미들웨어
+1. Record all requests
+2. Include timestamp
+3. Record HTTP method and URL
+4. Support asynchronous processing
+
+### 3. Error Processing Middleware
+
 ```javascript
 // backend/src/app.js
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({ message: 'Something went wrong!' });
+  res.status(500).json({ message: "Something went wrong!" });
 });
 ```
 
-에러 처리 미들웨어의 특징:
-1. 모든 에러 캐치
-2. 스택 트레이스 로깅
-3. 클라이언트에 에러 응답
-4. 500 상태 코드 반환
+Features of error processing middleware:
 
-### 4. 기타 미들웨어
+1. Catch all errors
+2. Log stack trace
+3. Send error response to client
+4. Return 500 status code
+
+### 4. Other Middleware
 
 ```javascript
-// JSON 파싱 미들웨어
+// JSON parsing middleware
 app.use(express.json());
 
-// 라우트 미들웨어
-app.use('/api/users', userRoutes);
-app.use('/api/posts', postRoutes);
+// Route middleware
+app.use("/api/users", userRoutes);
+app.use("/api/posts", postRoutes);
 ```
 
-### 5. 미들웨어 실행 순서
+### 5. Middleware Execution Order
 
-1. CORS 미들웨어
-   - 요청의 출처 확인
-   - 허용된 도메인인지 검증
+1. CORS Middleware
+   - Confirm request origin
+   - Verify if it's an allowed domain
 
-2. JSON 파싱 미들웨어
-   - 요청 본문을 JSON으로 파싱
-   - `req.body`에 데이터 추가
+2. JSON Parsing Middleware
+   - Parse request body into JSON
+   - Add data to `req.body`
 
-3. 로깅 미들웨어
-   - 요청 정보 기록
-   - 디버깅 용이
+3. Logging Middleware
+   - Record request info
+   - Facilitate debugging
 
-4. 라우트 미들웨어
-   - 요청을 적절한 라우트로 전달
-   - 컨트롤러 실행
+4. Route Middleware
+   - Deliver request to appropriate route
+   - Execute controller
 
-5. 에러 처리 미들웨어
-   - 발생한 에러 처리
-   - 에러 응답 전송
+5. Error Processing Middleware
+   - Process occurred errors
+   - Send error response
 
-### 6. 미들웨어 사용 예시
+### 6. Middleware Usage Example
 
 ```javascript
-// 1. CORS 요청
-fetch('http://localhost:8080/api/posts', {
-  method: 'GET',
-  credentials: 'include',
+// 1. CORS Request
+fetch("http://localhost:8080/api/posts", {
+  method: "GET",
+  credentials: "include",
   headers: {
-    'Content-Type': 'application/json'
-  }
+    "Content-Type": "application/json",
+  },
 });
 
-// 2. 로그 출력
+// 2. Log Output
 // 2024-03-20T12:00:00.000Z - GET /api/posts
 
-// 3. 에러 발생 시
+// 3. Upon Error
 // 2024-03-20T12:00:00.000Z - Error: Not allowed by CORS
 // { message: 'Something went wrong!' }
 ```
 
-이 미들웨어 구조의 장점:
-1. 보안 강화 (CORS)
-2. 디버깅 용이 (로깅)
-3. 에러 처리 일관성
-4. 요청/응답 처리 표준화
-5. 코드 재사용성
+Advantages of this middleware structure:
 
-## CORS(Cross-Origin Resource Sharing)
+1. Security enhancement (CORS)
+2. Ease of debugging (logging)
+3. Consistency in error processing
+4. Standardization of request/response processing
+5. Code reusability
 
-CORS(Cross-Origin Resource Sharing)는 웹 브라우저의 보안 정책 중 하나입니다. 
+## CORS (Cross-Origin Resource Sharing)
 
-### CORS가 필요한 이유
+CORS (Cross-Origin Resource Sharing) is one of the security policies of web browsers.
 
-예를 들어보겠습니다:
-1. 프론트엔드: `http://localhost:3000` (React 앱)
-2. 백엔드: `http://localhost:8080` (Express 서버)
+### Why CORS is Needed
 
-이때 프론트엔드에서 백엔드로 API 요청을 보내면:
+Let's take an example:
+
+1. Frontend: `http://localhost:3000` (React App)
+2. Backend: `http://localhost:8080` (Express Server)
+
+At this time, if you send an API request from the frontend to the backend:
+
 ```javascript
-// 프론트엔드 코드 (http://localhost:3000)
-fetch('http://localhost:8080/api/posts')
-  .then(res => res.json())
-  .then(data => console.log(data));
+// Frontend code (http://localhost:3000)
+fetch("http://localhost:8080/api/posts")
+  .then((res) => res.json())
+  .then((data) => console.log(data));
 ```
 
-이 요청은 **다른 출처(Cross-Origin)**로의 요청입니다:
-- 출처(Origin) = 프로토콜 + 도메인 + 포트
+This request is a request to a **different origin (Cross-Origin)**:
+
+- Origin = Protocol + Domain + Port
 - `http://localhost:3000` ≠ `http://localhost:8080`
 
-### CORS가 없다면?
+### What if There's No CORS?
 
-악의적인 웹사이트가 있을 수 있습니다:
+There could be malicious websites:
+
 ```javascript
-// 악의적인 웹사이트 (http://evil.com)
-fetch('http://your-bank.com/api/transfer', {
-  method: 'POST',
+// Malicious website (http://evil.com)
+fetch("http://your-bank.com/api/transfer", {
+  method: "POST",
   body: JSON.stringify({
-    to: 'hacker',
-    amount: 1000000
-  })
+    to: "hacker",
+    amount: 1000000,
+  }),
 });
 ```
 
-이런 상황을 방지하기 위해 브라우저는:
-1. 다른 출처로의 요청을 기본적으로 차단
-2. 서버가 명시적으로 허용한 출처만 접근 가능
+To prevent such situations, browsers:
 
-### CORS 설정 예시
+1. Basically block requests to different origins
+2. Only allow access to origins explicitly permitted by the server
+
+### CORS Setup Example
 
 ```javascript
 // backend/src/app.js
 const corsOptions = {
-  // 1. 허용할 출처 목록
+  // 1. Allowed origin list
   origin: [
-    'http://localhost:3000',        // 개발 환경
-    'http://192.168.219.120:3000',  // 로컬 네트워크
-    'https://your-domain.com'       // 프로덕션 환경
+    "http://localhost:3000", // Development environment
+    "http://192.168.219.120:3000", // Local network
+    "https://your-domain.com", // Production environment
   ],
 
-  // 2. 허용할 HTTP 메서드
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  // 2. Allowed HTTP methods
+  methods: ["GET", "POST", "PUT", "DELETE"],
 
-  // 3. 허용할 헤더
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  // 3. Allowed headers
+  allowedHeaders: ["Content-Type", "Authorization"],
 
-  // 4. 인증 정보 허용 (쿠키, HTTP 인증)
-  credentials: true
+  // 4. Allow authentication info (Cookie, HTTP authentication)
+  credentials: true,
 };
 
 app.use(cors(corsOptions));
 ```
 
-### CORS 동작 방식
+### CORS Operation Mode
 
-1. **단순 요청** (Simple Request):
+1. **Simple Request**:
+
 ```javascript
-// 프론트엔드
-fetch('http://localhost:8080/api/posts')
-  .then(res => res.json());
+// Frontend
+fetch("http://localhost:8080/api/posts").then((res) => res.json());
 ```
-- GET, POST, HEAD 메서드
-- 기본적인 헤더만 사용
-- 브라우저가 자동으로 CORS 체크
 
-2. **사전 요청** (Preflight Request):
+- GET, POST, HEAD methods
+- Use only basic headers
+- Browser automatically checks CORS
+
+2. **Preflight Request**:
+
 ```javascript
-// 프론트엔드
-fetch('http://localhost:8080/api/posts', {
-  method: 'PUT',
+// Frontend
+fetch("http://localhost:8080/api/posts", {
+  method: "PUT",
   headers: {
-    'Content-Type': 'application/json',
-    'Authorization': 'Bearer token'
-  }
+    "Content-Type": "application/json",
+    Authorization: "Bearer token",
+  },
 });
 ```
-- OPTIONS 메서드로 먼저 요청
-- 서버가 허용하는지 확인
-- 허용되면 실제 요청 전송
 
-### CORS 에러 예시
+- Request first with OPTIONS method
+- Confirm if the server allows it
+- If allowed, send the actual request
+
+### CORS Error Example
 
 ```javascript
-// 1. 허용되지 않은 출처
-Access to fetch at 'http://localhost:8080/api/posts' from origin 
+// 1. Disallowed origin
+Access to fetch at 'http://localhost:8080/api/posts' from origin
 'http://evil.com' has been blocked by CORS policy
 
-// 2. 허용되지 않은 메서드
+// 2. Disallowed method
 Method PUT is not allowed by Access-Control-Allow-Methods
 
-// 3. 허용되지 않은 헤더
+// 3. Disallowed header
 Header 'X-Custom-Header' is not allowed by Access-Control-Allow-Headers
 ```
 
-### CORS의 장점
+### Advantages of CORS
 
-1. **보안 강화**:
-   - 허용된 출처만 접근 가능
-   - CSRF 공격 방지
-   - 데이터 유출 방지
+1. **Security Enhancement**:
+   - Accessible only to allowed origins
+   - Prevent CSRF attacks
+   - Prevent data leaks
 
-2. **명확한 접근 제어**:
-   - 어떤 출처가 접근 가능한지 명시
-   - 어떤 메서드가 허용되는지 명시
-   - 어떤 헤더가 허용되는지 명시
+2. **Clear Access Control**:
+   - Specify which origins are accessible
+   - Specify which methods are allowed
+   - Specify which headers are allowed
 
-3. **유연한 설정**:
-   - 개발/프로덕션 환경별 설정
-   - 다양한 출처 허용 가능
-   - 필요한 기능만 허용
+3. **Flexible Setup**:
+   - Setup by development/production environment
+   - Can allow various origins
+   - Allow only required features
 
-네, CORS를 더 쉽게 설명해드리겠습니다.
+Yes, I will explain CORS more easily.
 
-### 1. CORS가 필요한 상황
+### 1. Situations Where CORS is Needed
 
-예를 들어, 당신이 웹사이트를 만들고 있다고 가정해보겠습니다:
+For example, assume you are making a website:
 
 ```
-프론트엔드: http://localhost:3000 (React 앱)
-백엔드: http://localhost:8080 (Express 서버)
+Frontend: http://localhost:3000 (React App)
+Backend: http://localhost:8080 (Express Server)
 ```
 
-이때 프론트엔드에서 백엔드로 데이터를 요청하면:
+At this time, if you request data from the frontend to the backend:
+
 ```javascript
-// 프론트엔드 코드
-fetch('http://localhost:8080/api/posts')
-  .then(res => res.json())
-  .then(posts => console.log(posts));
+// Frontend code
+fetch("http://localhost:8080/api/posts")
+  .then((res) => res.json())
+  .then((posts) => console.log(posts));
 ```
 
-이 요청은 **다른 출처**로의 요청입니다:
-- 프론트엔드: `http://localhost:3000`
-- 백엔드: `http://localhost:8080`
-- 포트가 다르므로 다른 출처
+This request is a request to a **different origin**:
 
-### 2. CORS가 없다면?
+- Frontend: `http://localhost:3000`
+- Backend: `http://localhost:8080`
+- Since the ports are different, they are different origins
 
-악의적인 웹사이트가 있다고 가정해보겠습니다:
+### 2. What if There's No CORS?
+
+Assume there's a malicious website:
+
 ```
-악의적인 사이트: http://evil.com
+Malicious site: http://evil.com
 ```
 
-이 사이트에서 당신의 백엔드로 요청을 보낼 수 있습니다:
+This site can send a request to your backend:
+
 ```javascript
-// 악의적인 사이트의 코드
-fetch('http://localhost:8080/api/posts', {
-  method: 'POST',
+// Malicious site code
+fetch("http://localhost:8080/api/posts", {
+  method: "POST",
   body: JSON.stringify({
-    title: 'Hacked Post',
-    content: 'This is a hack'
-  })
+    title: "Hacked Post",
+    content: "This is a hack",
+  }),
 });
 ```
 
-이런 상황을 방지하기 위해 브라우저는:
-1. 다른 출처로의 요청을 기본적으로 차단
-2. 서버가 "이 출처는 괜찮아!"라고 말한 경우만 허용
+To prevent such situations, browsers:
 
-### 3. CORS 설정 방법
+1. Basically block requests to different origins
+2. Only allow if the server says "This origin is okay!"
+
+### 3. How to Set CORS
 
 ```javascript
 // backend/src/app.js
 const corsOptions = {
-  // 1. 허용할 출처 목록
+  // 1. Allowed origin list
   origin: [
-    'http://localhost:3000',  // 개발 환경
-    'https://your-site.com'   // 실제 사이트
+    "http://localhost:3000", // Development environment
+    "https://your-site.com", // Actual site
   ],
 
-  // 2. 허용할 HTTP 메서드
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  // 2. Allowed HTTP methods
+  methods: ["GET", "POST", "PUT", "DELETE"],
 
-  // 3. 인증 정보 허용 (쿠키 등)
-  credentials: true
+  // 3. Allow authentication info (Cookie, etc.)
+  credentials: true,
 };
 
 app.use(cors(corsOptions));
 ```
 
-### 4. 실제 동작 예시
+### 4. Practical Operation Example
 
-1. **정상적인 요청**:
+1. **Normal Request**:
+
 ```javascript
-// 프론트엔드 (http://localhost:3000)
-fetch('http://localhost:8080/api/posts')
-  .then(res => res.json())
-  .then(posts => console.log(posts));
+// Frontend (http://localhost:3000)
+fetch("http://localhost:8080/api/posts")
+  .then((res) => res.json())
+  .then((posts) => console.log(posts));
 ```
-- 브라우저: "이 요청은 허용된 출처에서 왔어!"
-- 서버: "응, 괜찮아!"
-- 결과: 요청 성공
 
-2. **악의적인 요청**:
+- Browser: "This request came from an allowed origin!"
+- Server: "Yeah, it's okay!"
+- Result: Request success
+
+2. **Malicious Request**:
+
 ```javascript
-// 악의적인 사이트 (http://evil.com)
-fetch('http://localhost:8080/api/posts')
-  .then(res => res.json())
-  .then(posts => console.log(posts));
+// Malicious site (http://evil.com)
+fetch("http://localhost:8080/api/posts")
+  .then((res) => res.json())
+  .then((posts) => console.log(posts));
 ```
-- 브라우저: "이 요청은 허용되지 않은 출처에서 왔어!"
-- 서버: 응답도 못 보냄
-- 결과: CORS 에러 발생
 
-### 5. CORS의 한계
+- Browser: "This request came from a disallowed origin!"
+- Server: Cannot even send a response
+- Result: CORS error occurs
 
-CORS는 브라우저에서만 동작합니다:
-1. 브라우저를 통한 요청 → CORS 적용
-2. 브라우저 외부 요청 → CORS 적용 안 됨
+### 5. Limits of CORS
 
-예를 들어:
+CORS only operates in browsers:
+
+1. Requests through browsers → CORS applied
+2. Requests outside browsers → CORS not applied
+
+Example:
+
 ```bash
-# curl로 요청
+# Request via curl
 curl http://localhost:8080/api/posts
 ```
-- CORS 정책이 적용되지 않음
-- 서버는 요청을 받을 수 있음
 
-### 6. 실제 보안
+- CORS policy not applied
+- Server can receive the request
 
-CORS는 기본적인 보안일 뿐, 실제 보안은 서버에서 해야 합니다:
+### 6. Actual Security
+
+CORS is only basic security; actual security must be done on the server:
 
 ```javascript
-// 1. 인증 확인
-app.use('/api/posts', auth, postRoutes);
+// 1. Verify authentication
+app.use("/api/posts", auth, postRoutes);
 
-// 2. 요청 제한
-app.use(rateLimit({
-  windowMs: 15 * 60 * 1000, // 15분
-  max: 100 // IP당 최대 요청 수
-}));
+// 2. Limit requests
+app.use(
+  rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // Max requests per IP
+  }),
+);
 ```
 
-### 요약
+### Summary
 
-1. CORS는:
-   - 브라우저의 보안 정책
-   - 다른 출처의 요청을 제한
-   - 허용된 출처만 접근 가능
+1. CORS is:
+   - A security policy of browsers
+   - Limits requests from other origins
+   - Accessible only to allowed origins
 
-2. CORS 설정은:
-   - 어떤 출처를 허용할지
-   - 어떤 메서드를 허용할지
-   - 인증 정보를 허용할지
+2. CORS setup includes:
+   - Which origins to allow
+   - Which methods to allow
+   - Whether to allow authentication info
 
-3. 실제 보안은:
-   - 서버에서 인증/인가
-   - API 보안
-   - 요청 제한
+3. Actual security involves:
+   - Authentication/Authorization on the server
+   - API security
+   - Request limits
 
-## 6단계: 보안
+---
 
-네, 6단계인 보안 부분을 살펴보겠습니다. 먼저 현재 구현된 보안 관련 코드들을 확인해보겠습니다.
+## Step 6: Security
 
-### 1. CORS 보안 설정
+Yes, we will look into Step 6, the Security. First, we'll check the currently implemented security-related codes.
+
+### 1. CORS Security Configuration
+
 ```javascript
 // backend/src/app.js
 const corsOptions = {
-  // 1. 허용된 출처 제한
-  origin: [
-    'http://localhost:3000',
-    'http://192.168.219.120:3000'
-  ],
+  // 1. Limit allowed origins
+  origin: ["http://localhost:3000", "http://192.168.219.120:3000"],
 
-  // 2. 허용된 메서드 제한
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  // 2. Limit allowed methods
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 
-  // 3. 허용된 헤더 제한
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  // 3. Limit allowed headers
+  allowedHeaders: ["Content-Type", "Authorization"],
 
-  // 4. 인증 정보 설정
-  credentials: true
+  // 4. Configure authentication info
+  credentials: true,
 };
 
 app.use(cors(corsOptions));
 ```
 
-### 2. 입력 데이터 검증
+### 2. Input Data Verification
+
 ```javascript
 // backend/src/controllers/userController.js
 const register = async (req, res) => {
   try {
     const { username, email, password } = req.body;
 
-    // 1. 중복 사용자 확인
-    const existingUser = await User.findOne({ 
-      $or: [{ email }, { username }] 
+    // 1. Confirm duplicate user
+    const existingUser = await User.findOne({
+      $or: [{ email }, { username }],
     });
     if (existingUser) {
-      return res.status(400).json({ 
-        message: 'User already exists' 
+      return res.status(400).json({
+        message: "User already exists",
       });
     }
 
-    // 2. 새 사용자 생성
+    // 2. Create new user
     const user = new User({ username, email, password });
     await user.save();
     // ...
   } catch (error) {
-    res.status(500).json({ 
-      message: 'Error registering user', 
-      error: error.message 
+    res.status(500).json({
+      message: "Error registering user",
+      error: error.message,
     });
   }
 };
 ```
 
-### 3. 에러 처리 및 로깅
+### 3. Error Processing and Logging
+
 ```javascript
 // backend/src/app.js
-// 1. 요청 로깅
+// 1. Request logging
 app.use((req, res, next) => {
   console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
   next();
 });
 
-// 2. 에러 처리
+// 2. Error processing
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({ message: 'Something went wrong!' });
+  res.status(500).json({ message: "Something went wrong!" });
 });
 ```
 
-### 4. 추가 보안 설정 제안
+### 4. Additional Security Configuration Proposals
 
-1. **Rate Limiting 추가**:
+1. **Add Rate Limiting**:
+
 ```javascript
 // backend/src/app.js
-const rateLimit = require('express-rate-limit');
+const rateLimit = require("express-rate-limit");
 
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15분
-  max: 100 // IP당 최대 요청 수
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Max requests per IP
 });
 
 app.use(limiter);
 ```
 
-2. **Helmet 사용**:
+2. **Use Helmet**:
+
 ```javascript
 // backend/src/app.js
-const helmet = require('helmet');
+const helmet = require("helmet");
 
-app.use(helmet()); // 보안 헤더 설정
+app.use(helmet()); // Configure security headers
 ```
 
-3. **입력 데이터 검증 강화**:
+3. **Strengthen Input Data Verification**:
+
 ```javascript
 // backend/src/middleware/validator.js
-const { body, validationResult } = require('express-validator');
+const { body, validationResult } = require("express-validator");
 
 const validateUser = [
-  body('username')
+  body("username")
     .trim()
     .isLength({ min: 3 })
-    .withMessage('Username must be at least 3 characters long'),
-  body('email')
-    .isEmail()
-    .normalizeEmail()
-    .withMessage('Invalid email address'),
-  body('password')
+    .withMessage("Username must be at least 3 characters long"),
+  body("email").isEmail().normalizeEmail().withMessage("Invalid email address"),
+  body("password")
     .isLength({ min: 6 })
-    .withMessage('Password must be at least 6 characters long'),
+    .withMessage("Password must be at least 6 characters long"),
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
     next();
-  }
+  },
 ];
 ```
 
-4. **에러 로깅 강화**:
+4. **Strengthen Error Logging**:
+
 ```javascript
 // backend/src/middleware/errorLogger.js
 const errorLogger = (err, req, res, next) => {
@@ -1828,7 +1906,7 @@ const errorLogger = (err, req, res, next) => {
     url: req.url,
     error: err.message,
     stack: err.stack,
-    user: req.user ? req.user._id : 'anonymous'
+    user: req.user ? req.user._id : "anonymous",
   });
   next(err);
 };
@@ -1836,50 +1914,50 @@ const errorLogger = (err, req, res, next) => {
 app.use(errorLogger);
 ```
 
-### 5. 보안 체크리스트
+### 5. Security Checklist
 
-1. **CORS 보안**:
-   - 허용된 출처만 설정
-   - 필요한 메서드만 허용
-   - 필요한 헤더만 허용
+1. **CORS Security**:
+   - Set only allowed origins
+   - Allow only required methods
+   - Allow only required headers
 
-2. **입력 데이터 검증**:
-   - 모든 입력 데이터 검증
-   - SQL 인젝션 방지
-   - XSS 공격 방지
+2. **Input Data Verification**:
+   - Verify all input data
+   - Prevent SQL injection
+   - Prevent XSS attacks
 
-3. **에러 처리**:
-   - 민감한 에러 정보 숨기기
-   - 적절한 에러 로깅
-   - 사용자 친화적인 에러 메시지
+3. **Error Processing**:
+   - Hide sensitive error information
+   - Appropriate error logging
+   - User-friendly error messages
 
-4. **인증/인가**:
-   - JWT 토큰 검증
-   - 비밀번호 해싱
-   - 세션 관리
+4. **Authentication/Authorization**:
+   - JWT token verification
+   - Password hashing
+   - Session management
 
-5. **추가 보안**:
+5. **Additional Security**:
    - Rate limiting
-   - 보안 헤더
-   - HTTPS 사용
+   - Security headers
+   - Use HTTPS
 
-### 6. 보안 모니터링
+### 6. Security Monitoring
 
 ```javascript
 // backend/src/middleware/securityMonitor.js
 const securityMonitor = (req, res, next) => {
-  // 1. 요청 모니터링
+  // 1. Request monitoring
   console.log({
     timestamp: new Date().toISOString(),
     ip: req.ip,
     method: req.method,
     url: req.url,
-    userAgent: req.headers['user-agent']
+    userAgent: req.headers["user-agent"],
   });
 
-  // 2. 의심스러운 요청 감지
+  // 2. Detect suspicious requests
   if (isSuspiciousRequest(req)) {
-    console.warn('Suspicious request detected:', req);
+    console.warn("Suspicious request detected:", req);
   }
 
   next();
@@ -1888,73 +1966,75 @@ const securityMonitor = (req, res, next) => {
 app.use(securityMonitor);
 ```
 
-이 보안 구조의 장점:
-1. 다층적 보안
-2. 실시간 모니터링
-3. 자동화된 검증
-4. 상세한 로깅
-5. 확장 가능한 구조
+Advantages of this security structure:
 
-## User 모델 동작 방식 (Mongoose)
+1. Multi-layered security
+2. Real-time monitoring
+3. Automated verification
+4. Detailed logging
+5. Scalable structure
 
-네, 정확히 이해하셨습니다! Mongoose의 모델과 인스턴스 생성 과정을 자세히 설명해드리겠습니다.
+## User Model Operation (Mongoose)
 
-### 1. User 모델 정의
+Ah, yes, you understood correctly! I will explain the Mongoose model and instance creation process in detail.
+
+### 1. User Model Definition
+
 ```javascript
 // backend/src/models/User.js
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   email: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   password: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 });
 
-// 모델 생성
-const User = mongoose.model('User', userSchema);
+// Model creation
+const User = mongoose.model("User", userSchema);
 ```
 
-### 2. 인스턴스 생성 과정
+### 2. Instance Creation Process
 
 ```javascript
-// 1. new User() 호출 시
-const user = new User({ 
-  username: "john_doe", 
-  email: "john@example.com", 
-  password: "password123" 
+// 1. Upon calling new User()
+const user = new User({
+  username: "john_doe",
+  email: "john@example.com",
+  password: "password123",
 });
 
-// 내부적으로 일어나는 일:
-// 1. mongoose가 userSchema를 기반으로 새 문서 인스턴스 생성
-// 2. 입력된 데이터로 문서 초기화
-// 3. 스키마에 정의된 기본값, 검증 등 적용
+// What happens internally:
+// 1. mongoose creates a new document instance based on userSchema
+// 2. Initialize document with input data
+// 3. Apply defaults, verification, etc., defined in the schema
 ```
 
-### 3. save() 메서드
+### 3. save() Method
 
 ```javascript
-// 2. user.save() 호출 시
+// 2. Upon calling user.save()
 await user.save();
 
-// 내부적으로 일어나는 일:
-// 1. 스키마에 정의된 pre('save') 훅 실행
-// 2. 데이터 검증
-// 3. MongoDB에 실제 저장
-// 4. post('save') 훅 실행
+// What happens internally:
+// 1. Execute pre('save') hook defined in schema
+// 2. Data verification
+// 3. Actual storage in MongoDB
+// 4. Execute post('save') hook
 ```
 
-### 4. 실제 동작 예시
+### 4. Practical Operation Example
 
 ```javascript
 // backend/src/controllers/userController.js
@@ -1962,148 +2042,151 @@ const register = async (req, res) => {
   try {
     const { username, email, password } = req.body;
 
-    // 1. 새 User 인스턴스 생성
-    const user = new User({ 
-      username, 
-      email, 
-      password 
+    // 1. Create new User instance
+    const user = new User({
+      username,
+      email,
+      password,
     });
-    // 이 시점에서는 아직 DB에 저장되지 않음
-    // 메모리에만 존재하는 상태
+    // At this point, it's not yet stored in DB
+    // Status exists only in memory
 
-    // 2. save() 호출로 DB에 저장
+    // 2. Store in DB by calling save()
     await user.save();
-    // 이 시점에서 실제로 DB에 저장됨
-    // pre('save') 훅이 실행되어 비밀번호가 해시됨
+    // At this point, it's actually stored in DB
+    // pre('save') hook is executed and password is hashed
 
-    // 3. 생성된 사용자 정보 반환
+    // 3. Return created user info
     res.status(201).json({
-      message: 'User registered successfully',
+      message: "User registered successfully",
       user: {
-        _id: user._id,  // MongoDB가 생성한 ID
+        _id: user._id, // ID generated by MongoDB
         username: user.username,
-        email: user.email
-      }
+        email: user.email,
+      },
     });
   } catch (error) {
-    res.status(500).json({ 
-      message: 'Error registering user', 
-      error: error.message 
+    res.status(500).json({
+      message: "Error registering user",
+      error: error.message,
     });
   }
 };
 ```
 
-### 5. Mongoose의 특별한 기능들
+### 5. Mongoose's Special Features
 
-1. **스키마 메서드**:
+1. **Schema Methods**:
+
 ```javascript
-// User 모델에 메서드 추가
-userSchema.methods.comparePassword = async function(candidatePassword) {
+// Add method to User model
+userSchema.methods.comparePassword = async function (candidatePassword) {
   return bcrypt.compare(candidatePassword, this.password);
 };
 
-// 사용
+// Usage
 const isMatch = await user.comparePassword("password123");
 ```
 
-2. **미들웨어 (훅)**:
+2. **Middleware (Hooks)**:
+
 ```javascript
-// 저장 전 실행되는 훅
-userSchema.pre('save', async function(next) {
-  if (!this.isModified('password')) return next();
-  
-  // 비밀번호 해싱
+// Hook executed before storage
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+
+  // Password hashing
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
   next();
 });
 ```
 
-3. **가상 필드**:
+3. **Virtual Fields**:
+
 ```javascript
-// 실제 DB에 저장되지 않는 필드
-userSchema.virtual('fullName').get(function() {
+// Field not actually stored in DB
+userSchema.virtual("fullName").get(function () {
   return `${this.firstName} ${this.lastName}`;
 });
 ```
 
-### 6. Mongoose의 장점
+### 6. Advantages of Mongoose
 
-1. **객체 지향적**:
-   - JavaScript 객체처럼 다룰 수 있음
-   - 메서드와 속성 추가 가능
+1. **Object-Oriented**:
+   - Can be treated like JavaScript objects
+   - Can add methods and properties
 
-2. **스키마 기반**:
-   - 데이터 구조 정의
-   - 타입 검증
-   - 기본값 설정
+2. **Schema-based**:
+   - Define data structure
+   - Type verification
+   - Setup default values
 
-3. **미들웨어 지원**:
-   - 저장 전/후 처리
-   - 검증
-   - 데이터 변환
+3. **Middleware Support**:
+   - Pre/Post processing for storage
+   - Verification
+   - Data conversion
 
-4. **쿼리 빌더**:
-   - 체이닝 방식의 쿼리
-   - 복잡한 쿼리 작성 용이
+4. **Query Builder**:
+   - Chaining-style queries
+   - Easy to write complex queries
 
-## 7단계: 테스트 및 배포
+---
 
-네, 7단계인 테스트 및 배포 단계를 살펴보겠습니다. 각 부분을 상세히 설명해드리겠습니다.
+## Step 7: Testing and Deployment
 
-### 1. API 테스트
+Yes, we will look into Step 7, the Testing and Deployment stages. I will explain each part in detail.
 
-1. **Jest를 사용한 단위 테스트**:
+### 1. API Testing
+
+1. **Unit Testing Using Jest**:
+
 ```javascript
 // backend/src/tests/user.test.js
-const request = require('supertest');
-const app = require('../app');
-const User = require('../models/User');
+const request = require("supertest");
+const app = require("../app");
+const User = require("../models/User");
 
-describe('User API Tests', () => {
-  // 테스트 전 DB 초기화
+describe("User API Tests", () => {
+  // Initialize DB before testing
   beforeEach(async () => {
     await User.deleteMany({});
   });
 
-  // 회원가입 테스트
-  test('should register a new user', async () => {
-    const res = await request(app)
-      .post('/api/users/register')
-      .send({
-        username: 'testuser',
-        email: 'test@example.com',
-        password: 'password123'
-      });
-
-    expect(res.statusCode).toBe(201);
-    expect(res.body).toHaveProperty('message', 'User registered successfully');
-  });
-
-  // 로그인 테스트
-  test('should login existing user', async () => {
-    // 먼저 사용자 생성
-    await User.create({
-      username: 'testuser',
-      email: 'test@example.com',
-      password: 'password123'
+  // Registration test
+  test("should register a new user", async () => {
+    const res = await request(app).post("/api/users/register").send({
+      username: "testuser",
+      email: "test@example.com",
+      password: "password123",
     });
 
-    const res = await request(app)
-      .post('/api/users/login')
-      .send({
-        email: 'test@example.com',
-        password: 'password123'
-      });
+    expect(res.statusCode).toBe(201);
+    expect(res.body).toHaveProperty("message", "User registered successfully");
+  });
+
+  // Login test
+  test("should login existing user", async () => {
+    // Create user first
+    await User.create({
+      username: "testuser",
+      email: "test@example.com",
+      password: "password123",
+    });
+
+    const res = await request(app).post("/api/users/login").send({
+      email: "test@example.com",
+      password: "password123",
+    });
 
     expect(res.statusCode).toBe(200);
-    expect(res.body).toHaveProperty('token');
+    expect(res.body).toHaveProperty("token");
   });
 });
 ```
 
-2. **Postman을 사용한 API 테스트**:
+2. **API Testing Using Postman**:
+
 ```javascript
 // backend/postman/board-service.postman_collection.json
 {
@@ -2131,74 +2214,79 @@ describe('User API Tests', () => {
             }
           }
         }
-        // ... (다른 API 엔드포인트 테스트도 추가 가능)
+        // ... (other API endpoint tests can also be added)
       ]
     }
   ]
 }
 ```
-- Postman을 사용하면 실제로 API를 호출해보고, 응답을 확인하며, 다양한 시나리오(정상/에러)를 쉽게 테스트할 수 있습니다.
+
+- By using Postman, you can actually call the API, check the response, and easily test various scenarios (normal/error).
 
 ---
 
-### 2. 배포
+### 2. Deployment
 
-1. **환경 변수 관리**
-   - `.env` 파일에 DB 주소, JWT 시크릿, 포트 등 민감한 정보를 저장합니다.
-   - 예시:
-     ```
-     MONGODB_URI=mongodb+srv://user:password@cluster.mongodb.net/board
-     JWT_SECRET=your_jwt_secret
-     PORT=8080
-     ```
+1. **Environment Variable Management**
+   - Store sensitive info like DB address, JWT secret, port, etc., in the `.env` file.
+   - Example:
 
-2. **프로덕션 빌드 및 실행**
-   - `npm run build` (프론트엔드가 있다면)
-   - `npm start` 또는 `node src/app.js`
+```
+MONGODB_URI=mongodb+srv://user:password@cluster.mongodb.net/board
+JWT_SECRET=your_jwt_secret
+PORT=8080
+```
 
-3. **서버 배포**
-   - 클라우드 서비스(AWS, GCP, Azure, Vercel, Heroku 등) 또는 VPS(가상 서버)에 업로드
-   - 예시: Heroku 배포
-     ```bash
-     heroku create board-service
-     heroku config:set MONGODB_URI=...
-     git push heroku main
-     ```
+2. **Production Build and Execution**
+   - `npm run build` (if frontend exists)
+   - `npm start` or `node src/app.js`
 
-4. **프로세스 매니저 사용**
-   - PM2 등으로 서버를 안정적으로 관리
-     ```bash
-     npm install pm2 -g
-     pm2 start src/app.js --name board-service
-     pm2 save
-     pm2 startup
-     ```
+3. **Server Deployment**
+   - Upload to cloud services (AWS, GCP, Azure, Vercel, Heroku, etc.) or VPS (Virtual Private Server).
+   - Example: Heroku Deployment
 
-5. **HTTPS 적용**
-   - Let's Encrypt 등으로 SSL 인증서 적용
-   - Nginx, Apache 등 리버스 프록시 설정
+```bash
+heroku create board-service
+heroku config:set MONGODB_URI=...
+git push heroku main
+```
+
+4. **Using Process Manager**
+   - Manage server stably with PM2, etc.
+
+```bash
+npm install pm2 -g
+pm2 start src/app.js --name board-service
+pm2 save
+pm2 startup
+```
+
+5. **Apply HTTPS**
+   - Apply SSL certificate with Let's Encrypt, etc.
+   - Configure reverse proxy like Nginx, Apache, etc.
 
 ---
 
-### 3. 배포 후 체크리스트
+### 3. Post-Deployment Checklist
 
-- API 정상 동작 확인 (테스트 자동화/수동)
-- 보안 설정(환경 변수, CORS, 인증 등) 재확인
-- 로그 및 모니터링 설정
-- 백업 및 장애 대비
-
+- Confirm normal API operation (test automation/manual)
+- Re-confirm security setup (environment variables, CORS, authentication, etc.)
+- Logging and monitoring configuration
+- Backup and disaster preparedness
 
 ## API tests
 
-아래는 "게시판 서비스"에서 자주 사용되는 API 테스트 시나리오 10가지 예시입니다.  
-각 예시는 Postman에서 사용할 수 있도록 요청 방식, URL, Body, 설명을 함께 제공합니다.
+Below are 10 examples of API test scenarios frequently used in "Board Services."
+Each example provides the request method, URL, Body, and description so they can be used in Postman.
 
 ---
 
-### 1. 회원가입 (Register User)
-- **Method:** POST  
-- **URL:** http://localhost:8080/api/users/register  
+### 1. Registration (Register User)
+
+- **Method:** POST
+- **URL:** http://localhost:8080/api/users/register
 - **Body (JSON):**
+
 ```json
 {
   "username": "testuser1",
@@ -2206,150 +2294,169 @@ describe('User API Tests', () => {
   "password": "password123"
 }
 ```
-- **설명:** 새로운 사용자를 등록합니다.
+
+- **Description:** Register a new user.
 
 ---
 
-### 2. 로그인 (Login User)
-- **Method:** POST  
-- **URL:** http://localhost:8080/api/users/login  
+### 2. Login (Login User)
+
+- **Method:** POST
+- **URL:** http://localhost:8080/api/users/login
 - **Body (JSON):**
+
 ```json
 {
   "email": "test1@example.com",
   "password": "password123"
 }
 ```
-- **설명:** 등록된 사용자가 로그인합니다. (응답에서 JWT 토큰을 받음)
+
+- **Description:** A registered user logs in. (Receives JWT token in response)
 
 ---
 
-### 3. 내 정보 조회 (Get My Profile)
-- **Method:** GET  
-- **URL:** http://localhost:8080/api/users/me  
-- **Headers:**  
+### 3. My Info Lookup (Get My Profile)
+
+- **Method:** GET
+- **URL:** http://localhost:8080/api/users/me
+- **Headers:**
   - Authorization: Bearer {JWT_TOKEN}
-- **설명:** 로그인한 사용자의 정보를 조회합니다.
+- **Description:** Lookup info of the logged-in user.
 
 ---
 
-### 4. 게시글 목록 조회 (Get Posts)
-- **Method:** GET  
-- **URL:** http://localhost:8080/api/posts  
-- **설명:** 전체 게시글 목록을 조회합니다.
+### 4. Post List Lookup (Get Posts)
+
+- **Method:** GET
+- **URL:** http://localhost:8080/api/posts
+- **Description:** Lookup the entire list of posts.
 
 ---
 
-### 5. 게시글 작성 (Create Post)
-- **Method:** POST  
-- **URL:** http://localhost:8080/api/posts  
-- **Headers:**  
-  - Authorization: Bearer {JWT_TOKEN}
-- **Body (JSON):**
-```json
-{
-  "title": "첫 번째 게시글",
-  "content": "게시글 내용입니다."
-}
-```
-- **설명:** 새로운 게시글을 작성합니다.
+### 5. Create Post (Create Post)
 
----
-
-### 6. 게시글 상세 조회 (Get Post Detail)
-- **Method:** GET  
-- **URL:** http://localhost:8080/api/posts/1  
-- **설명:** 특정 게시글의 상세 정보를 조회합니다. (1은 게시글 ID)
-
----
-
-### 7. 게시글 수정 (Update Post)
-- **Method:** PUT  
-- **URL:** http://localhost:8080/api/posts/1  
-- **Headers:**  
+- **Method:** POST
+- **URL:** http://localhost:8080/api/posts
+- **Headers:**
   - Authorization: Bearer {JWT_TOKEN}
 - **Body (JSON):**
+
 ```json
 {
-  "title": "수정된 게시글 제목",
-  "content": "수정된 게시글 내용"
+  "title": "First Post",
+  "content": "This is post content."
 }
 ```
-- **설명:** 특정 게시글을 수정합니다.
+
+- **Description:** Create a new post.
 
 ---
 
-### 8. 게시글 삭제 (Delete Post)
-- **Method:** DELETE  
-- **URL:** http://localhost:8080/api/posts/1  
-- **Headers:**  
-  - Authorization: Bearer {JWT_TOKEN}
-- **설명:** 특정 게시글을 삭제합니다.
+### 6. Post Detail Lookup (Get Post Detail)
+
+- **Method:** GET
+- **URL:** http://localhost:8080/api/posts/1
+- **Description:** Lookup detail information of a specific post. (1 is the post ID)
 
 ---
 
-### 9. 댓글 작성 (Add Comment)
-- **Method:** POST  
-- **URL:** http://localhost:8080/api/posts/1/comments  
-- **Headers:**  
+### 7. Edit Post (Update Post)
+
+- **Method:** PUT
+- **URL:** http://localhost:8080/api/posts/1
+- **Headers:**
   - Authorization: Bearer {JWT_TOKEN}
 - **Body (JSON):**
+
 ```json
 {
-  "content": "댓글 내용입니다."
+  "title": "Edited post title",
+  "content": "Edited post content"
 }
 ```
-- **설명:** 특정 게시글에 댓글을 작성합니다.
+
+- **Description:** Edit a specific post.
 
 ---
 
-### 10. 댓글 삭제 (Delete Comment)
-- **Method:** DELETE  
-- **URL:** http://localhost:8080/api/posts/1/comments/5  
-- **Headers:**  
+### 8. Delete Post (Delete Post)
+
+- **Method:** DELETE
+- **URL:** http://localhost:8080/api/posts/1
+- **Headers:**
   - Authorization: Bearer {JWT_TOKEN}
-- **설명:** 특정 게시글의 특정 댓글을 삭제합니다. (1은 게시글 ID, 5는 댓글 ID)
+- **Description:** Delete a specific post.
 
 ---
 
-#### 참고
-- `{JWT_TOKEN}`은 로그인 시 응답으로 받은 토큰을 사용합니다.
-- 실제 API 경로(`/api/posts/1` 등)는 프로젝트 라우팅에 따라 다를 수 있습니다.
-- Postman에서 각 요청을 "컬렉션"으로 저장해두면 반복적으로 테스트하기 편리합니다.
+### 9. Write Comment (Add Comment)
 
-## 프로덕션 환경 구성안
+- **Method:** POST
+- **URL:** http://localhost:8080/api/posts/1/comments
+- **Headers:**
+  - Authorization: Bearer {JWT_TOKEN}
+- **Body (JSON):**
 
-네, 맞습니다!  
-**Node.js(Express) 서버 앞단에 Nginx를 리버스 프록시로 두는 구조**가 가장 일반적입니다.
-
----
-
-## 구조 그림
-
-```
-[인터넷 사용자]
-        │
-   (80/443 포트)
-        │
-   [ Nginx 서버 ]
-        │
-   (8080 등 내부 포트)
-        │
- [ Node.js(Express) 서버 ]
+```json
+{
+  "content": "This is comment content."
+}
 ```
 
----
-
-## 동작 방식
-
-1. **사용자**가 `http://yourdomain.com` 또는 `https://yourdomain.com`으로 접속
-2. **Nginx**가 80(HTTP) 또는 443(HTTPS) 포트에서 요청을 받음
-3. Nginx가 내부의 Node.js 서버(예: `localhost:8080`)로 요청을 전달(proxy_pass)
-4. Node.js가 응답을 생성 → Nginx가 다시 사용자에게 응답 전달
+- **Description:** Write a comment on a specific post.
 
 ---
 
-## Nginx 리버스 프록시 설정 예시
+### 10. Delete Comment (Delete Comment)
+
+- **Method:** DELETE
+- **URL:** http://localhost:8080/api/posts/1/comments/5
+- **Headers:**
+  - Authorization: Bearer {JWT_TOKEN}
+- **Description:** Delete a specific comment on a specific post. (1 is post ID, 5 is comment ID)
+
+---
+
+#### Reference
+
+- For `{JWT_TOKEN}`, use the token received in response during login.
+- Actual API paths (like `/api/posts/1`) may vary depending on the project routing.
+- Saving each request as a "Collection" in Postman is convenient for repetitive testing.
+
+## Production Environment Configuration Plan
+
+Yes, that's correct!
+The structure of placing **Nginx as a reverse proxy in front of the Node.js (Express) server** is the most common.
+
+---
+
+## Structure Diagram
+
+```
+[Internet User]
+        │
+   (Port 80/443)
+        │
+   [ Nginx Server ]
+        │
+   (Internal port like 8080)
+        │
+ [ Node.js(Express) Server ]
+```
+
+---
+
+## Operation Mode
+
+1. **User** accesses `http://yourdomain.com` or `https://yourdomain.com`
+2. **Nginx** receives the request at port 80 (HTTP) or 443 (HTTPS)
+3. Nginx delivers the request to the internal Node.js server (e.g., `localhost:8080`) (proxy_pass)
+4. Node.js creates a response → Nginx delivers the response back to the user
+
+---
+
+## Nginx Reverse Proxy Setup Example
 
 ```nginx
 server {
@@ -2357,7 +2464,7 @@ server {
     server_name yourdomain.com;
 
     location / {
-        proxy_pass http://localhost:8080;  # Node.js 서버로 프록시
+        proxy_pass http://localhost:8080;  # Proxy to Node.js server
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -2368,212 +2475,219 @@ server {
 
 ---
 
-## 장점 요약
+## Summary of Advantages
 
-- **보안**: Node.js 서버는 외부에 직접 노출되지 않음
-- **HTTPS 처리**: SSL 인증서 적용 및 자동 리다이렉트 가능
-- **정적 파일**: Nginx가 빠르게 서빙
-- **로드밸런싱**: 여러 Node.js 서버로 분산 가능
-
----
-
-**즉, Node.js 서버 앞에 Nginx를 두고, Nginx가 모든 외부 요청을 받아서 Node.js로 전달하는 구조가 표준입니다!**
-
-## 유저 트래픽 흐름
-
-아주 좋은 질문입니다!  
-아래는 **사용자 → 프론트엔드(React) → 백엔드(Node.js)** 전체 흐름을 단계별로 설명한 그림입니다.
+- **Security**: Node.js server is not directly exposed to the outside
+- **HTTPS Processing**: SSL certificate application and automatic redirection possible
+- **Static Files**: Fast serving by Nginx
+- **Load Balancing**: Distribution across multiple Node.js servers possible
 
 ---
 
-## 전체 흐름 그림
+**In short, the structure where Nginx is placed before the Node.js server and Nginx receives all external requests to deliver them to Node.js is the standard!**
+
+## User Traffic Flow
+
+Very good question!
+Below is a step-by-step diagram of the overall flow: **User → Frontend (React) → Backend (Node.js).**
+
+---
+
+## Overall Flow Diagram
 
 ```
-[인터넷 사용자]
+[Internet User]
         │
-   (80/443 포트)
+   (Port 80/443)
         │
-   [ Nginx 서버 ]
+   [ Nginx Server ]
       │        │
-      │        └─> [ Node.js(Express) API 서버 ] (8080 포트)
-      └─> [ 정적 파일 (React build) ]
+      │        └─> [ Node.js(Express) API Server ] (Port 8080)
+      └─> [ Static Files (React build) ]
 ```
 
 ---
 
-## 1. 사용자 접속
+## 1. User Access
 
-- **사용자**가 브라우저에서 `http://yourdomain.com` 접속
-- Nginx가 80(HTTP) 또는 443(HTTPS) 포트에서 요청을 받음
-
----
-
-## 2. Nginx 처리
-
-- **Nginx**가 요청을 분석:
-  - `/api/`로 시작하는 요청 → Node.js(Express)로 프록시
-  - 그 외 요청 → React 빌드 결과물(정적 파일)로 응답
+- **User** accesses `http://yourdomain.com` from browser
+- Nginx receives the request at port 80 (HTTP) or 443 (HTTPS)
 
 ---
 
-## 3. 프론트엔드(React) 처리
+## 2. Nginx Processing
 
-- **React 앱**이 브라우저에서 로드됨
-- **React Router**가 URL에 따라 적절한 페이지 렌더링
-- **API 호출**이 필요한 경우, 백엔드로 요청 전송
-
----
-
-## 4. 백엔드(Node.js) 처리
-
-- **Node.js(Express)**가 API 요청을 받음
-- **DB 조회**, **비즈니스 로직**, **인증** 등 처리
-- **응답**을 JSON 형태로 반환
+- **Nginx** analyzes the request:
+  - Request starting with `/api/` → Proxy to Node.js (Express)
+  - Other requests → Respond with React build results (static files)
 
 ---
 
-## 5. 응답 전달
+## 3. Frontend (React) Processing
 
-- **Node.js** → **Nginx** → **사용자**로 응답 전달
-- **React 앱**이 응답을 받아 UI 업데이트
-
----
-
-## 6. 실제 예시
-
-### 1) 사용자가 로그인 페이지 접속
-- `http://yourdomain.com/login` 접속
-- Nginx가 React 빌드 결과물(`index.html`)로 응답
-- React 앱이 로그인 페이지 렌더링
-
-### 2) 사용자가 로그인 시도
-- React 앱이 `/api/login` API 호출
-- Nginx가 요청을 Node.js로 프록시
-- Node.js가 인증 처리 후 JWT 토큰 반환
-- React 앱이 토큰을 저장하고 메인 페이지로 리다이렉트
-
-### 3) 사용자가 게시글 목록 조회
-- React 앱이 `/api/posts` API 호출
-- Nginx가 요청을 Node.js로 프록시
-- Node.js가 DB에서 게시글 목록 조회 후 반환
-- React 앱이 게시글 목록 렌더링
+- **React App** is loaded in the browser
+- **React Router** renders appropriate page according to URL
+- If **API call** is needed, send request to backend
 
 ---
 
-## 7. 장점
+## 4. Backend (Node.js) Processing
 
-- **보안**: Node.js 서버는 외부에 직접 노출되지 않음
-- **성능**: 정적 파일은 Nginx가 빠르게 서빙
-- **HTTPS**: Nginx에서 SSL 인증서 적용 가능
-- **캐싱/압축**: Nginx 설정으로 성능 최적화
-
----
-
-## 8. 결론
-
-- **Nginx**가 프론트엔드(React)와 백엔드(Node.js)를 연결하는 **중앙 게이트웨이** 역할
-- **프론트엔드**는 정적 파일로 Nginx가 직접 서빙
-- **백엔드**는 API 요청만 Nginx가 프록시
-
-
-## proxy_set_header X-Real-IP $remote_addr;  # 사용자 IP 전달
-
-아주 좋은 질문입니다!  
-**`proxy_set_header X-Real-IP $remote_addr;`**는 **사용자의 실제 IP 주소**를 Node.js 서버에 전달하기 위해 사용합니다.
+- **Node.js (Express)** receives the API request
+- Process **DB lookup**, **business logic**, **authentication**, etc.
+- Return **response** in JSON format
 
 ---
 
-## 1. 왜 필요한가?
+## 5. Response Delivery
 
-### 1) IP 기반 기능
-- **로그 기록**: 사용자 IP를 로그에 남겨서 추적
-- **접근 제한**: 특정 IP에서만 접근 허용/차단
-- **지역 기반 서비스**: IP 기반으로 지역별 서비스 제공
-
-### 2) 문제 상황
-- **Nginx**가 중간에서 요청을 받으면, Node.js는 요청이 **Nginx**에서 온 것으로 인식
-- Node.js는 사용자의 실제 IP(`$remote_addr`)를 알 수 없음
-- → **`X-Real-IP` 헤더**로 사용자 IP를 전달
+- **Node.js** → **Nginx** → Deliver response to **User**
+- **React App** receives response and updates UI
 
 ---
 
-## 2. 실제 예시
+## 6. Practical Example
 
-### 1) Nginx 설정
+### 1) User accesses login page
+
+- Access `http://yourdomain.com/login`
+- Nginx responds with React build results (`index.html`)
+- React App renders login page
+
+### 2) User attempts login
+
+- React App calls `/api/login` API
+- Nginx proxies request to Node.js
+- Node.js returns JWT token after auth processing
+- React App stores token and redirects to main page
+
+### 3) User looks up post list
+
+- React App calls `/api/posts` API
+- Nginx proxies request to Node.js
+- Node.js returns post list after DB lookup
+- React App renders post list
+
+---
+
+## 7. Advantages
+
+- **Security**: Node.js server is not directly exposed to the outside
+- **Performance**: Static files are served quickly by Nginx
+- **HTTPS**: SSL certificate can be applied in Nginx
+- **Caching/Compression**: Performance optimization possible through Nginx setup
+
+---
+
+## 8. Conclusion
+
+- **Nginx** acts as a **central gateway** connecting Frontend (React) and Backend (Node.js)
+- **Frontend** is served directly by Nginx as static files
+- **Backend** has only API requests proxied by Nginx
+
+## proxy_set_header X-Real-IP $remote_addr; # Deliver user IP
+
+Very good question!
+**`proxy_set_header X-Real-IP $remote_addr;`** is used to deliver the **actual IP address of the user** to the Node.js server.
+
+---
+
+## 1. Why is it needed?
+
+### 1) IP-based features
+
+- **Log recording**: Track by leaving user IP in logs
+- **Access restriction**: Allow/Block access only from specific IPs
+- **Location-based services**: Provide region-specific services based on IP
+
+### 2) Problem situation
+
+- When **Nginx** receives the request in the middle, Node.js recognizes that the request came from **Nginx**
+- Node.js cannot know the actual IP of the user (`$remote_addr`)
+- → Deliver user IP via **`X-Real-IP` header**
+
+---
+
+## 2. Practical Example
+
+### 1) Nginx Setup
+
 ```nginx
 location /api/ {
     proxy_pass http://localhost:8080;
-    proxy_set_header X-Real-IP $remote_addr;  # 사용자 IP 전달
+    proxy_set_header X-Real-IP $remote_addr;  # Deliver user IP
 }
 ```
 
-### 2) Node.js(Express)에서 IP 확인
+### 2) Confirm IP in Node.js (Express)
+
 ```javascript
-app.get('/api/users', (req, res) => {
-    const userIP = req.headers['x-real-ip'];  // 사용자 IP 확인
-    console.log('User IP:', userIP);
-    // ... 나머지 코드
+app.get("/api/users", (req, res) => {
+  const userIP = req.headers["x-real-ip"]; // Confirm user IP
+  console.log("User IP:", userIP);
+  // ... rest of the code
 });
 ```
 
 ---
 
-## 3. 장점
+## 3. Advantages
 
-- **정확한 로깅**: 사용자 IP를 정확히 기록
-- **보안**: IP 기반 접근 제한 가능
-- **분석**: 사용자 행동 분석에 활용
-
----
-
-## 4. 결론
-
-- **`X-Real-IP` 헤더**는 사용자의 실제 IP를 Node.js에 전달
-- **IP 기반 기능**(로그, 접근 제한, 지역 기반 서비스 등)에 필수
+- **Accurate logging**: Record user IP accurately
+- **Security**: IP-based access restriction possible
+- **Analysis**: Utilize for user behavior analysis
 
 ---
 
-## 📝 로깅 시스템 가이드
+## 4. Conclusion
 
-이 섹션에서는 Winston을 사용한 구조화된 로깅 시스템과 로그 파일 관리에 대해 설명합니다.
+- **`X-Real-IP` header** delivers the actual user IP to Node.js
+- Essential for **IP-based features** (log, access restriction, location-based services, etc.)
 
 ---
 
-## 🔧 로깅 설정
+## 📝 Logging System Guide
 
-### **1. Winston 로거 설정**
+This section explains the structured logging system using Winston and log file management.
+
+---
+
+## 🔧 Logging Configuration
+
+### **1. Winston Logger Setup**
+
 ```javascript
 // src/config/logger.js
-const winston = require('winston');
-const path = require('path');
+const winston = require("winston");
+const path = require("path");
 
-const logDir = '/var/log/app/board-service/nodejs';
+const logDir = "/var/log/app/board-service/nodejs";
 
 const logger = winston.createLogger({
-  level: 'info',
+  level: "info",
   format: winston.format.combine(
     winston.format.timestamp({
-      format: 'YYYY-MM-DD HH:mm:ss'
+      format: "YYYY-MM-DD HH:mm:ss",
     }),
     winston.format.errors({ stack: true }),
-    winston.format.json()
+    winston.format.json(),
   ),
-  defaultMeta: { service: 'board-service-backend' },
+  defaultMeta: { service: "board-service-backend" },
   transports: [
     new winston.transports.File({
-      filename: path.join(logDir, 'error.log'),
-      level: 'error',
+      filename: path.join(logDir, "error.log"),
+      level: "error",
       maxsize: 5242880, // 5MB
       maxFiles: 5,
     }),
     new winston.transports.File({
-      filename: path.join(logDir, 'combined.log'),
+      filename: path.join(logDir, "combined.log"),
       maxsize: 5242880, // 5MB
       maxFiles: 5,
     }),
     new winston.transports.File({
-      filename: path.join(logDir, 'access.log'),
-      level: 'info',
+      filename: path.join(logDir, "access.log"),
+      level: "info",
       maxsize: 5242880, // 5MB
       maxFiles: 5,
     }),
@@ -2581,26 +2695,29 @@ const logger = winston.createLogger({
 });
 ```
 
-### **2. 로그 파일 구조**
+### **2. Log File Structure**
+
 ```
 /var/log/app/board-service/nodejs/
-├── access.log      # 정보 레벨 로그 (HTTP 요청, 서버 상태 등)
-├── error.log       # 에러 레벨 로그 (에러, 예외 등)
-├── combined.log    # 모든 레벨 로그 통합
-└── .gitkeep        # Git 추적용 파일
+├── access.log      # Information level logs (HTTP requests, server status, etc.)
+├── error.log       # Error level logs (errors, exceptions, etc.)
+├── combined.log    # Integration of all level logs
+└── .gitkeep        # File for Git tracking
 ```
 
 ---
 
-## 📊 로그 레벨 및 형식
+## 📊 Log Levels and Format
 
-### **로그 레벨**
-- **error**: 에러 및 예외 상황
-- **warn**: 경고 상황
-- **info**: 일반 정보 (HTTP 요청, 서버 상태 등)
-- **debug**: 디버깅 정보 (개발 환경에서만)
+### **Log Levels**
 
-### **로그 형식 예시**
+- **error**: Error and exception situations
+- **warn**: Warning situations
+- **info**: General information (HTTP requests, server status, etc.)
+- **debug**: Debugging information (only in development environment)
+
+### **Log Format Example**
+
 ```json
 {
   "level": "info",
@@ -2616,91 +2733,98 @@ const logger = winston.createLogger({
 
 ---
 
-## 🚀 로깅 사용법
+## 🚀 Logging Usage
 
-### **1. 기본 로깅**
+### **1. Basic Logging**
+
 ```javascript
-const logger = require('./config/logger');
+const logger = require("./config/logger");
 
-// 정보 로그
-logger.info('Server started successfully');
+// Info log
+logger.info("Server started successfully");
 
-// 에러 로그
-logger.error('Database connection failed', { error: err.message });
+// Error log
+logger.error("Database connection failed", { error: err.message });
 
-// 경고 로그
-logger.warn('High memory usage detected', { memory: process.memoryUsage() });
+// Warning log
+logger.warn("High memory usage detected", { memory: process.memoryUsage() });
 ```
 
-### **2. HTTP 요청 로깅**
-```javascript
-// Morgan을 사용한 HTTP 요청 로깅
-app.use(morgan('combined', { stream: logger.stream }));
+### **2. HTTP Request Logging**
 
-// 커스텀 요청 로깅
+```javascript
+// HTTP request logging using Morgan
+app.use(morgan("combined", { stream: logger.stream }));
+
+// Custom request logging
 app.use((req, res, next) => {
   logger.info(`${req.method} ${req.url}`, {
     method: req.method,
     url: req.url,
     ip: req.ip,
-    userAgent: req.get('User-Agent')
+    userAgent: req.get("User-Agent"),
   });
   next();
 });
 ```
 
-### **3. 에러 로깅**
+### **3. Error Logging**
+
 ```javascript
-// 에러 처리 미들웨어
+// Error processing middleware
 app.use((err, req, res, next) => {
-  logger.error('Unhandled error:', { 
-    error: err.message, 
+  logger.error("Unhandled error:", {
+    error: err.message,
     stack: err.stack,
     method: req.method,
     url: req.url,
-    ip: req.ip
+    ip: req.ip,
   });
-  res.status(500).json({ message: 'Something went wrong!' });
+  res.status(500).json({ message: "Something went wrong!" });
 });
 ```
 
 ---
 
-## 📁 로그 파일 관리
+## 📁 Log File Management
 
-### **1. 로그 로테이션**
-- **최대 파일 크기**: 5MB
-- **최대 파일 수**: 5개
-- **자동 로테이션**: 크기 기반
+### **1. Log Rotation**
 
-### **2. 로그 디렉토리 생성**
+- **Max file size**: 5MB
+- **Max file count**: 5
+- **Automatic rotation**: Based on size
+
+### **2. Create Log Directory**
+
 ```bash
-# 로그 디렉토리 생성
+# Create log directory
 sudo mkdir -p /var/log/app/board-service/nodejs
 
-# 권한 설정
+# Setup permissions
 sudo chown -R $(whoami):$(id -gn) /var/log/app/board-service/nodejs
 sudo chmod 777 /var/log/app/board-service/nodejs
 ```
 
-### **3. 로그 모니터링**
+### **3. Log Monitoring**
+
 ```bash
-# 실시간 로그 확인
+# Confirm real-time logs
 tail -f /var/log/app/board-service/nodejs/access.log
 tail -f /var/log/app/board-service/nodejs/error.log
 
-# 로그 라인 수 확인
+# Confirm log line count
 wc -l /var/log/app/board-service/nodejs/*.log
 
-# 특정 패턴 검색
+# Search specific patterns
 grep "error" /var/log/app/board-service/nodejs/combined.log
 ```
 
 ---
 
-## 🐳 Docker 로깅
+## 🐳 Docker Logging
 
-### **1. Docker Compose 설정**
+### **1. Docker Compose Configuration**
+
 ```yaml
 services:
   backend:
@@ -2713,91 +2837,100 @@ services:
       - ./backend/.env
 ```
 
-### **2. Dockerfile 로그 디렉토리**
+### **2. Dockerfile Log Directory**
+
 ```dockerfile
-# 로그 디렉토리 생성 및 권한 설정
+# Create log directory and setup permissions
 RUN mkdir -p /var/log/app/board-service/nodejs && \
     chown -R nodejs:nodejs /var/log/app/board-service/nodejs && \
     chmod -R 755 /var/log/app/board-service/nodejs
 ```
 
-### **3. 컨테이너 로그 확인**
+### **3. Confirm Container Logs**
+
 ```bash
-# 컨테이너 로그 확인
+# Confirm container logs
 docker logs board-backend
 
-# 실시간 로그 확인
+# Confirm real-time logs
 docker logs -f board-backend
 
-# 호스트 로그 파일 확인
+# Confirm host log files
 ls -la /var/log/app/board-service/nodejs/
 ```
 
 ---
 
-## 🔍 로그 분석 및 모니터링
+## 🔍 Log Analysis and Monitoring
 
-### **1. 로그 분석 도구**
+### **1. Log Analysis Tools**
+
 ```bash
-# HTTP 요청 통계
+# HTTP request statistics
 grep "GET\|POST\|PUT\|DELETE" /var/log/app/board-service/nodejs/access.log | wc -l
 
-# 에러 발생 빈도
+# Error occurrence frequency
 grep "error" /var/log/app/board-service/nodejs/error.log | wc -l
 
-# 특정 IP 접근 기록
+# Access records for specific IP
 grep "127.0.0.1" /var/log/app/board-service/nodejs/access.log
 ```
 
-### **2. 로그 백업**
+### **2. Log Backup**
+
 ```bash
-# 로그 백업
+# Log backup
 cp -r /var/log/app/board-service/nodejs /backup/nodejs-logs-$(date +%Y%m%d)
 
-# 로그 압축
+# Log compression
 tar -czf /backup/nodejs-logs-$(date +%Y%m%d).tar.gz /var/log/app/board-service/nodejs/
 ```
 
 ---
 
-## 🎯 로깅 모범 사례
+## 🎯 Logging Best Practices
 
-### **1. 로그 메시지 작성**
-- **명확하고 구체적**: "Database connection failed" vs "Error occurred"
-- **컨텍스트 포함**: 요청 정보, 사용자 ID, 세션 ID 등
-- **일관된 형식**: 동일한 패턴의 로그 메시지
+### **1. Log Message Writing**
 
-### **2. 성능 고려사항**
-- **비동기 로깅**: Winston의 기본 설정
-- **로그 레벨 조정**: 프로덕션에서는 debug 레벨 비활성화
-- **로그 파일 크기 제한**: 디스크 공간 관리
+- **Clear and specific**: "Database connection failed" vs "Error occurred"
+- **Include context**: Request info, user ID, session ID, etc.
+- **Consistent format**: Log messages with the same pattern
 
-### **3. 보안 고려사항**
-- **민감한 정보 제외**: 비밀번호, 토큰 등
-- **로그 접근 권한**: 적절한 파일 권한 설정
-- **로그 보존 기간**: 필요에 따른 로그 정리
+### **2. Performance Considerations**
 
----
+- **Asynchronous logging**: Winston's default setup
+- **Adjust log levels**: Deactivate debug level in production
+- **Limit log file size**: Manage disk space
 
-## 🏗️ Docker 이미지 관리 가이드
+### **3. Security Considerations**
 
-이 섹션에서는 Docker 이미지를 빌드하고, 태그를 생성하고, Docker Hub에 푸시하고, 실행하는 전체 과정을 설명합니다.
+- **Exclude sensitive info**: Password, token, etc.
+- **Log access permissions**: Setup appropriate file permissions
+- **Log retention period**: Organize logs as needed
 
 ---
 
-## 📝 Docker 로깅 설정
+## 🏗️ Docker Image Management Guide
 
-### **1. 로그 디렉토리 준비**
+This section explains the overall process of building Docker images, creating tags, pushing to Docker Hub, and executing them.
+
+---
+
+## 📝 Docker Logging Setup
+
+### **1. Prepare Log Directory**
+
 ```bash
-# 호스트 시스템에 로그 디렉토리 생성
+# Create log directory on host system
 sudo mkdir -p /var/log/app/board-service/nodejs
 
-# 권한 설정
+# Setup permissions
 sudo chown -R $(whoami):$(id -gn) /var/log/app/board-service/nodejs
 sudo chmod 777 /var/log/app/board-service/nodejs
 ```
 
-### **2. Docker Compose 로깅 설정**
+### **2. Docker Compose Logging Configuration**
+
 ```yaml
 # docker-compose.yml
 services:
@@ -2811,178 +2944,193 @@ services:
       - ./backend/.env
 ```
 
-### **3. Docker Run 로깅 설정**
+### **3. Docker Run Logging Configuration**
+
 ```bash
-# 기본 실행 (로깅 포함)
+# Basic execution (including logging)
 docker run -d --name board-backend -p 8080:8080 \
   -v /var/log/app/board-service/nodejs:/var/log/app/board-service/nodejs \
   your-username/board-backend:latest
 
-# 환경 변수 파일 사용 (로깅 포함)
+# Use environment variable file (including logging)
 docker run -d --name board-backend -p 8080:8080 \
   -v /var/log/app/board-service/nodejs:/var/log/app/board-service/nodejs \
   --env-file ./backend/.env \
   your-username/board-backend:latest
 ```
 
-### **4. 로그 파일 확인**
+### **4. Confirm Log Files**
+
 ```bash
-# 실시간 로그 모니터링
+# Monitor real-time logs
 tail -f /var/log/app/board-service/nodejs/access.log
 tail -f /var/log/app/board-service/nodejs/error.log
 tail -f /var/log/app/board-service/nodejs/combined.log
 
-# 로그 통계
+# Log statistics
 wc -l /var/log/app/board-service/nodejs/*.log
 
-# 특정 패턴 검색
+# Search specific patterns
 grep "error" /var/log/app/board-service/nodejs/error.log
 grep "GET\|POST" /var/log/app/board-service/nodejs/access.log
 ```
 
 ---
 
-## 🔨 1. Docker 이미지 빌드
+## 🔨 1. Build Docker Image
 
-### **백엔드 이미지 빌드**
+### **Build Backend Image**
+
 ```bash
-# 프로젝트 루트 디렉토리에서 실행
+# Execute in project root directory
 docker build -t board-backend:latest ./backend
 
-# 또는 backend 디렉토리에서 실행
+# Or execute in backend directory
 cd backend
 docker build -t board-backend:latest .
 ```
 
-### **빌드 과정 설명**
-1. **Node.js 18 Alpine** 기본 이미지 사용
-2. **의존성 설치** (`npm ci --only=production`)
-3. **보안 사용자 생성** (`nodejs` 비root 사용자)
-4. **소스 코드 복사** 및 권한 설정
-5. **Health Check** 스크립트 설정
-6. **최종 이미지** 생성
+### **Build Process Description**
 
-### **빌드 확인**
+1. Use **Node.js 18 Alpine** base image
+2. **Install dependencies** (`npm ci --only=production`)
+3. **Create security user** (`nodejs` non-root user)
+4. **Copy source code** and setup permissions
+5. Setup **Health Check** script
+6. Create **final image**
+
+### **Confirm Build**
+
 ```bash
-# 이미지 목록 확인
+# Confirm image list
 docker images | grep board-backend
 
-# 이미지 상세 정보 확인
+# Confirm image detail info
 docker inspect board-backend:latest
 ```
 
 ---
 
-## 🏷️ 2. Docker 이미지 태그 생성
+## 🏷️ 2. Create Docker Image Tag
 
-### **로컬 이미지에 태그 생성**
+### **Create Tag for Local Image**
+
 ```bash
-# 기본 태그
+# Basic tag
 docker tag board-backend:latest board-backend:v1.0.0
 
-# Docker Hub 사용자명으로 태그
+# Tag with Docker Hub username
 docker tag board-backend:latest your-username/board-backend:latest
 docker tag board-backend:latest your-username/board-backend:v1.0.0
 
-# 특정 버전 태그
+# Specific version tag
 docker tag board-backend:latest your-username/board-backend:stable
 ```
 
-### **태그 확인**
+### **Confirm Tags**
+
 ```bash
-# 모든 태그 확인
+# Confirm all tags
 docker images board-backend
 
-# 특정 이미지의 모든 태그 확인
+# Confirm all tags of a specific image
 docker images your-username/board-backend
 ```
 
-### **태그 관리 팁**
-- **latest**: 최신 안정 버전
-- **v1.0.0**: 시맨틱 버전 관리
-- **stable**: 안정 버전
-- **dev**: 개발/테스트 버전
+### **Tag Management Tips**
+
+- **latest**: Latest stable version
+- **v1.0.0**: Semantic versioning
+- **stable**: Stable version
+- **dev**: Development/test version
 
 ---
 
-## 🚀 3. Docker Hub에 이미지 푸시
+## 🚀 3. Push Image to Docker Hub
 
-### **Docker Hub 로그인**
+### **Docker Hub Login**
+
 ```bash
-# Docker Hub 계정으로 로그인
+# Login with Docker Hub account
 docker login
 
-# 사용자명과 비밀번호 입력
+# Enter username and password
 Username: your-username
 Password: ********
 ```
 
-### **이미지 푸시**
+### **Push Image**
+
 ```bash
-# 최신 버전 푸시
+# Push latest version
 docker push your-username/board-backend:latest
 
-# 특정 버전 푸시
+# Push specific version
 docker push your-username/board-backend:v1.0.0
 
-# 모든 태그 푸시
+# Push all tags
 docker push your-username/board-backend --all-tags
 ```
 
-### **푸시 확인**
+### **Confirm Push**
+
 ```bash
-# Docker Hub에서 이미지 확인
+# Confirm image in Docker Hub
 docker search your-username/board-backend
 
-# 원격 이미지 정보 확인
+# Confirm remote image info
 docker pull your-username/board-backend:latest
 ```
 
 ---
 
-## 📥 4. Docker 이미지 풀링 및 실행
+## 📥 4. Pull and Run Docker Image
 
-### **이미지 풀링**
+### **Pull Image**
+
 ```bash
-# 최신 버전 풀링
+# Pull latest version
 docker pull your-username/board-backend:latest
 
-# 특정 버전 풀링
+# Pull specific version
 docker pull your-username/board-backend:v1.0.0
 
-# 이미지 확인
+# Confirm images
 docker images your-username/board-backend
 ```
 
-### **컨테이너 실행**
+### **Run Container**
 
-#### **기본 실행**
+#### **Basic Execution**
+
 ```bash
-# 포트 8080으로 실행 (로깅 포함)
+# Run on port 8080 (including logging)
 docker run -d --name board-backend -p 8080:8080 \
   -v /var/log/app/board-service/nodejs:/var/log/app/board-service/nodejs \
   your-username/board-backend:latest
 ```
 
-#### **환경 변수 파일 사용 (권장)**
+#### **Use Environment Variable File (Recommended)**
+
 ```bash
-# .env 파일 사용 (로깅 포함)
+# Use .env file (including logging)
 docker run -d --name board-backend -p 8080:8080 \
   -v /var/log/app/board-service/nodejs:/var/log/app/board-service/nodejs \
   --env-file ./backend/.env \
   your-username/board-backend:latest
 ```
 
-#### **환경별 실행**
+#### **Run by Environment**
+
 ```bash
-# 개발 환경 (로깅 포함)
+# Development environment (including logging)
 docker run -d --name board-backend-dev -p 8081:8080 \
   -v /var/log/app/board-service/nodejs:/var/log/app/board-service/nodejs \
   -e NODE_ENV=development \
   -e PORT=8080 \
   your-username/board-backend:latest
 
-# 프로덕션 환경 (로깅 포함)
+# Production environment (including logging)
 docker run -d --name board-backend-prod -p 8080:8080 \
   -v /var/log/app/board-service/nodejs:/var/log/app/board-service/nodejs \
   -e NODE_ENV=production \
@@ -2993,23 +3141,24 @@ docker run -d --name board-backend-prod -p 8080:8080 \
 
 ---
 
-## 🔄 전체 워크플로우 예시
+## 🔄 Overall Workflow Example
 
-### **1. 개발 → 빌드 → 배포 과정**
+### **1. Development → Build → Deployment Process**
+
 ```bash
-# 1. 코드 수정 후 이미지 빌드
+# 1. Build image after code modification
 docker build -t board-backend:latest ./backend
 
-# 2. Docker Hub에 태그
+# 2. Tag for Docker Hub
 docker tag board-backend:latest your-username/board-backend:latest
 
-# 3. Docker Hub에 푸시
+# 3. Push to Docker Hub
 docker push your-username/board-backend:latest
 
-# 4. 프로덕션 서버에서 풀링
+# 4. Pull on production server
 docker pull your-username/board-backend:latest
 
-# 5. 새 컨테이너 실행 (로깅 포함)
+# 5. Run new container (including logging)
 docker stop board-backend-prod
 docker rm board-backend-prod
 docker run -d --name board-backend-prod -p 8080:8080 \
@@ -3018,203 +3167,219 @@ docker run -d --name board-backend-prod -p 8080:8080 \
   your-username/board-backend:latest
 ```
 
-### **2. 버전 관리 워크플로우**
+### **2. Version Management Workflow**
+
 ```bash
-# 1. 새 버전 빌드
+# 1. Build new version
 docker build -t board-backend:v2.0.0 ./backend
 
-# 2. 여러 태그 생성
+# 2. Create multiple tags
 docker tag board-backend:v2.0.0 your-username/board-backend:v2.0.0
 docker tag board-backend:v2.0.0 your-username/board-backend:latest
 
-# 3. 모든 태그 푸시
+# 3. Push all tags
 docker push your-username/board-backend:v2.0.0
 docker push your-username/board-backend:latest
 
-# 4. 롤백 준비 (이전 버전 유지)
+# 4. Rollback preparation (Maintain previous version)
 docker tag your-username/board-backend:v1.0.0 your-username/board-backend:stable
 ```
 
 ---
 
-## 🐛 로깅 관련 문제 해결
+## 🐛 Logging Related Problem Solving
 
-### **로그 파일이 생성되지 않는 경우**
+### **If log file is not created**
+
 ```bash
-# 1. 로그 디렉토리 권한 확인
+# 1. Confirm log directory permissions
 ls -la /var/log/app/board-service/nodejs/
 
-# 2. 권한 수정
+# 2. Fix permissions
 sudo chmod 777 /var/log/app/board-service/nodejs
 
-# 3. 소유권 확인 및 수정
+# 3. Confirm and fix ownership
 sudo chown -R $(whoami):$(id -gn) /var/log/app/board-service/nodejs
 
-# 4. 컨테이너 내부 로그 디렉토리 확인
+# 4. Confirm log directory inside container
 docker exec board-backend ls -la /var/log/app/board-service/nodejs/
 ```
 
-### **로그 볼륨 마운트 문제**
+### **Log volume mount issue**
+
 ```bash
-# 1. 볼륨 마운트 상태 확인
+# 1. Confirm volume mount status
 docker inspect board-backend | grep -A 10 "Mounts"
 
-# 2. 컨테이너 재시작 (볼륨 마운트 포함)
+# 2. Restart container (including volume mount)
 docker stop board-backend
 docker rm board-backend
 docker run -d --name board-backend -p 8080:8080 \
   -v /var/log/app/board-service/nodejs:/var/log/app/board-service/nodejs \
   your-username/board-backend:latest
 
-# 3. Docker Compose 사용 시
+# 3. Upon using Docker Compose
 docker compose down
 docker compose up -d
 ```
 
-### **로그 파일 크기 문제**
+### **Log file size issue**
+
 ```bash
-# 1. 로그 파일 크기 확인
+# 1. Confirm log file size
 du -h /var/log/app/board-service/nodejs/*.log
 
-# 2. 로그 파일 로테이션 확인
+# 2. Confirm log file rotation
 ls -la /var/log/app/board-service/nodejs/
 
-# 3. 오래된 로그 파일 정리
+# 3. Cleanup old log files
 find /var/log/app/board-service/nodejs/ -name "*.log" -mtime +30 -delete
 ```
 
 ---
 
-## 🐛 일반적인 문제 해결
+## 🐛 General Problem Solving
 
-### **빌드 실패**
+### **Build failure**
+
 ```bash
-# 빌드 컨텍스트 확인
+# Confirm build context
 docker build --no-cache -t board-backend:latest ./backend
 
-# 빌드 로그 상세 확인
+# Confirm detailed build logs
 docker build --progress=plain -t board-backend:latest ./backend
 ```
 
-### **푸시 실패**
+### **Push failure**
+
 ```bash
-# Docker Hub 로그인 상태 확인
+# Confirm Docker Hub login status
 docker login
 
-# 이미지 태그 확인
+# Confirm image tags
 docker images your-username/board-backend
 
-# 권한 확인
+# Confirm permissions
 docker push your-username/board-backend:latest
 ```
 
-### **실행 실패**
+### **Execution failure**
+
 ```bash
-# 컨테이너 로그 확인
+# Confirm container logs
 docker logs board-backend
 
-# 포트 충돌 확인
+# Confirm port conflict
 lsof -i :8080
 
-# 다른 포트 사용 (로깅 포함)
+# Use different port (including logging)
 docker run -d --name board-backend -p 8081:8080 \
   -v /var/log/app/board-service/nodejs:/var/log/app/board-service/nodejs \
   your-username/board-backend:latest
 ```
 
-### **Health Check 실패**
+### **Health Check failure**
+
 ```bash
-# Health Check 상태 확인
+# Confirm Health Check status
 docker inspect board-backend | grep -A 10 "Health"
 
-# 수동 Health Check
+# Manual Health Check
 docker exec board-backend node healthcheck.js
 
-# 환경 변수 확인
+# Confirm environment variables
 docker exec board-backend env | grep PORT
 ```
 
 ---
 
-## 📊 이미지 관리 명령어
+## 📊 Image Management Commands
 
-### **이미지 정리**
+### **Clean Up Images**
+
 ```bash
-# 사용하지 않는 이미지 삭제
+# Delete unused images
 docker image prune
 
-# 모든 사용하지 않는 이미지 삭제
+# Delete all unused images
 docker image prune -a
 
-# 특정 이미지 삭제
+# Delete specific image
 docker rmi board-backend:latest
 docker rmi your-username/board-backend:latest
 ```
 
-### **디스크 사용량 확인**
+### **Confirm Disk Usage**
+
 ```bash
-# Docker 사용량 확인
+# Confirm Docker usage
 docker system df
 
-# 상세 사용량 확인
+# Confirm detailed usage
 docker system df -v
 ```
 
 ---
 
-## 🎯 모범 사례
+## 🎯 Best Practices
 
-### **태그 전략**
-- **latest**: 항상 최신 안정 버전
-- **vX.Y.Z**: 시맨틱 버전 관리
-- **stable**: 프로덕션 안정 버전
-- **dev**: 개발/테스트 버전
+### **Tag Strategy**
 
-### **보안**
-- **비root 사용자**: `nodejs` 사용자로 실행
-- **최소 권한**: 필요한 파일만 복사
-- **환경 변수**: 민감한 정보는 `.env`로 관리
-- **정기적인 업데이트**: 기본 이미지 보안 패치
+- **latest**: Always the latest stable version
+- **vX.Y.Z**: Semantic versioning
+- **stable**: Production stable version
+- **dev**: Development/test version
 
-### **성능**
-- **Alpine Linux**: 가벼운 기본 이미지
-- **프로덕션 의존성**: devDependencies 제외
-- **Health Check**: 자동 상태 모니터링
-- **레이어 최적화**: 효율적인 빌드 구조
+### **Security**
 
-### **로깅**
-- **구조화된 로그**: JSON 형식으로 검색 및 분석 용이
-- **로그 로테이션**: 자동 파일 크기 제한 및 백업
-- **볼륨 마운트**: 호스트 시스템에 로그 영구 저장
-- **로그 레벨**: 환경별 적절한 로그 레벨 설정
+- **Non-root user**: Run as `nodejs` user
+- **Minimum permissions**: Copy only required files
+- **Environment variables**: Manage sensitive info via `.env`
+- **Regular updates**: Base image security patches
+
+### **Performance**
+
+- **Alpine Linux**: Light base image
+- **Production dependencies**: Exclude devDependencies
+- **Health Check**: Automatic status monitoring
+- **Layer optimization**: Efficient build structure
+
+### **Logging**
+
+- **Structured logs**: JSON format for easy search and analysis
+- **Log rotation**: Automatic file size limit and backup
+- **Volume mount**: Persistent log storage on host system
+- **Log levels**: Appropriate log levels per environment
 
 ---
 
-## 📚 Docker 로깅 명령어 요약
+## 📚 Docker Logging Command Summary
 
-### **기본 실행 (로깅 포함)**
+### **Basic Execution (including logging)**
+
 ```bash
-# 단일 컨테이너 실행
+# Run single container
 docker run -d --name board-backend -p 8080:8080 \
   -v /var/log/app/board-service/nodejs:/var/log/app/board-service/nodejs \
   your-username/board-backend:latest
 
-# 환경 변수 파일 사용
+# Use environment variable file
 docker run -d --name board-backend -p 8080:8080 \
   -v /var/log/app/board-service/nodejs:/var/log/app/board-service/nodejs \
   --env-file ./backend/.env \
   your-username/board-backend:latest
 ```
 
-### **개발/프로덕션 환경**
+### **Development/Production Environment**
+
 ```bash
-# 개발 환경
+# Development environment
 docker run -d --name board-backend-dev -p 8081:8080 \
   -v /var/log/app/board-service/nodejs:/var/log/app/board-service/nodejs \
   -e NODE_ENV=development \
   your-username/board-backend:latest
 
-# 프로덕션 환경
+# Production environment
 docker run -d --name board-backend-prod -p 8080:8080 \
   -v /var/log/app/board-service/nodejs:/var/log/app/board-service/nodejs \
   -e NODE_ENV=production \
@@ -3222,24 +3387,26 @@ docker run -d --name board-backend-prod -p 8080:8080 \
   your-username/board-backend:latest
 ```
 
-### **Docker Compose 사용**
+### **Using Docker Compose**
+
 ```bash
-# 서비스 시작
+# Start service
 docker compose up -d
 
-# 서비스 재시작
+# Restart service
 docker compose restart backend
 
-# 서비스 중지
+# Stop service
 docker compose down
 ```
 
-### **로그 모니터링**
+### **Log Monitoring**
+
 ```bash
-# 컨테이너 로그
+# Container logs
 docker logs -f board-backend
 
-# 호스트 로그 파일
+# Host log files
 tail -f /var/log/app/board-service/nodejs/access.log
 tail -f /var/log/app/board-service/nodejs/error.log
 tail -f /var/log/app/board-service/nodejs/combined.log
@@ -3247,15 +3414,15 @@ tail -f /var/log/app/board-service/nodejs/combined.log
 
 ---
 
-## 🎯 결론
+## 🎯 Conclusion
 
-Docker를 사용하여 Node.js 백엔드를 컨테이너화하면:
+Containerizing the Node.js backend using Docker:
 
-- ✅ **일관된 환경**: 개발/스테이징/프로덕션 환경 통일
-- ✅ **빠른 배포**: 이미지 기반 배포로 빠른 롤아웃
-- ✅ **확장성**: 컨테이너 오케스트레이션으로 수평 확장
-- ✅ **유지보수성**: 설정 파일 기반으로 쉬운 관리
-- ✅ **보안**: 격리된 환경으로 보안 강화
-- ✅ **로깅**: 구조화된 로깅으로 모니터링 및 디버깅 용이
+- ✅ **Consistent environment**: Unification of development/staging/production environments
+- ✅ **Fast deployment**: Image-based deployment for fast rollout
+- ✅ **Scalability**: Horizontal expansion with container orchestration
+- ✅ **Maintainability**: Easy management based on configuration files
+- ✅ **Security**: Strengthened security with isolated environments
+- ✅ **Logging**: Easy monitoring and debugging with structured logging
 
-이 가이드를 따라하면 프로덕션 환경에서 안정적으로 운영할 수 있는 Docker 컨테이너를 구축할 수 있습니다.
+By following this guide, you can build Docker containers that can be operated stably in a production environment.
