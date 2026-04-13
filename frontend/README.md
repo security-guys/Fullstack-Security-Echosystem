@@ -382,6 +382,10 @@ const PostItem: React.FC<{ title: string; content: string }> = ({ title, content
 
 // 2. Callback Props Example (Child → Parent)
 
+type PostFormProps = {
+  onSubmit: (postData: { title: string; content: string }) => void;
+};
+
 // Parent Component
 const PostPage: React.FC = () => {
   const handlePostSubmit = (postData: { title: string; content: string }) => {
@@ -396,9 +400,6 @@ const PostPage: React.FC = () => {
 };
 
 // Child Component
-type PostFormProps = {
-  onSubmit: (postData: { title: string; content: string }) => void;
-};
 
 const PostForm: React.FC<PostFormProps> = ({ onSubmit }) => {
   const [title, setTitle] = useState("");
