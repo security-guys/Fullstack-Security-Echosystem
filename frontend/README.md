@@ -381,6 +381,8 @@ const PostItem: React.FC<{ title: string; content: string }> = ({ title, content
 };
 
 // 2. Callback Props Example (Child → Parent)
+
+// Child Component
 type PostFormProps = {
   onSubmit: (postData: { title: string; content: string }) => void;
 };
@@ -409,6 +411,7 @@ const PostForm: React.FC<PostFormProps> = ({ onSubmit }) => {
   );
 };
 
+// Parent Component
 const PostPage: React.FC = () => {
   const handlePostSubmit = (postData: { title: string; content: string }) => {
     console.log(postData);
